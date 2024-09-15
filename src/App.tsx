@@ -1,6 +1,6 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { createBrowserRouter, RouterProvider, } from "react-router-dom"
 import Layout from "./components/Layout"
-
+import Home from "./components/Home"
 
 function App() {
   
@@ -8,6 +8,12 @@ function App() {
     {
       path:'/',
       element:<Layout/>,
+      children:[
+        {
+          path:'/home',
+          element:<Home/>
+        }
+      ]
     }
   ])
   
