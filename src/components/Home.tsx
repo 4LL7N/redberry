@@ -3,6 +3,7 @@ import arrow from "/arrow.png";
 import Regions from "./regions";
 import Prices from "./prices";
 import Area from "./Areas";
+import Bedrooms from "./Bedrooms";
 function Home() {
   const [region, setRegion] = useState<boolean>(false);
   const [price, setPrice] = useState<boolean>(false);
@@ -10,13 +11,18 @@ function Home() {
   const [bedrooms, setBedrooms] = useState<boolean>(false);
   const [regionsChecked, setRegionsChecked] = useState<string[]>([]);
 
-  const [priceError,setPriceError] = useState<boolean>(false)
+  const [priceError, setPriceError] = useState<boolean>(false);
   const priceFrom = useRef<HTMLInputElement>(null);
   const priceTo = useRef<HTMLInputElement>(null);
 
-  const [areaError,setAreaError] = useState<boolean>(false)
-  const areaFrom = useRef<HTMLInputElement>(null)
-  const areaTo = useRef<HTMLInputElement>(null)
+  const [areaError, setAreaError] = useState<boolean>(false);
+  const areaFrom = useRef<HTMLInputElement>(null);
+  const areaTo = useRef<HTMLInputElement>(null);
+
+  const [bedroomsNum,setBedroomsNum] = useState<boolean>(false)
+
+  console.log(bedroomsNum);
+  
 
   return (
     <section className="mx-[65px] mt-[15px]">
@@ -50,12 +56,12 @@ function Home() {
               price ? "bg-[#f3f3f3]" : ""
             } `}
             onClick={() => {
-              if(priceError){
+              if (priceError) {
                 setPrice(!price);
-                if(priceTo.current)priceTo.current.value = ''
-                if(priceFrom.current)priceFrom.current.value = ''
-                setPriceError(false)
-              }else{
+                if (priceTo.current) priceTo.current.value = "";
+                if (priceFrom.current) priceFrom.current.value = "";
+                setPriceError(false);
+              } else {
                 setPrice(!price);
               }
             }}
@@ -69,21 +75,27 @@ function Home() {
               }`}
             />
           </button>
-          <Prices priceTo={priceTo} priceFrom={priceFrom} priceError={priceError} setPriceError={setPriceError} price={price} setPrice={setPrice}/>
+          <Prices
+            priceTo={priceTo}
+            priceFrom={priceFrom}
+            priceError={priceError}
+            setPriceError={setPriceError}
+            price={price}
+            setPrice={setPrice}
+          />
           <button
             className={`text-[#021526] text-[16px] font-bold flex gap-[4px] items-center px-[14px] py-[8px] rounded-[6px] ${
               area ? "bg-[#f3f3f3]" : ""
             } `}
             onClick={() => {
-              if(areaError){
+              if (areaError) {
                 setArea(!area);
-                if(areaTo.current)areaTo.current.value = ''
-                if(areaFrom.current)areaFrom.current.value = ''
-                setAreaError(false)
-              }else{
+                if (areaTo.current) areaTo.current.value = "";
+                if (areaFrom.current) areaFrom.current.value = "";
+                setAreaError(false);
+              } else {
                 setArea(!area);
               }
-              
             }}
           >
             ფართობი
@@ -95,7 +107,14 @@ function Home() {
               }`}
             />
           </button>
-              <Area areaTo={areaTo} areaFrom={areaFrom} areaError={areaError} setAreaError={setAreaError} area={area} setArea={setArea} />
+          <Area
+            areaTo={areaTo}
+            areaFrom={areaFrom}
+            areaError={areaError}
+            setAreaError={setAreaError}
+            area={area}
+            setArea={setArea}
+          />
           <button
             className={`text-[#021526] text-[16px] font-bold flex gap-[4px] items-center px-[14px] py-[8px] rounded-[6px] ${
               bedrooms ? "bg-[#f3f3f3]" : ""
@@ -113,6 +132,7 @@ function Home() {
               }`}
             />
           </button>
+          <Bedrooms bedrooms={bedrooms} setBedrooms={setBedrooms} bedroomsNum={bedroomsNum} setBedroomsNum={setBedroomsNum} />
         </div>
         <div className="flex gap-[16px]">
           <div></div>

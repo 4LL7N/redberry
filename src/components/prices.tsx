@@ -57,8 +57,8 @@ function Prices({priceTo,priceFrom,priceError,setPriceError,price,setPrice}:Pric
               </div>
               <p className={`absolute top-[50px] text-[12px] text-[#f93b1d] ${priceError?"":"hidden"} `} >ჩაწერეთ ვალიდური მონაცემები</p>
             </div>
-            <div className=" flex justify-end w-[100%]" >
-            <button className="px-[14px] py-[8px] text-[14px] bg-[#f93b1d] rounded-[8px] mt-[32px] self-end " onClick={() => {if(!priceError){setPrice(false)}}}>
+            <div className=" flex justify-end w-[100%] mt-[32px]" >
+            <button className="px-[14px] py-[8px] text-[14px] bg-[#f93b1d] rounded-[8px]  self-end " onClick={() => {if(!priceError){setPrice(false)}}}>
               არჩევა
             </button>
             </div>

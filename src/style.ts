@@ -23,3 +23,10 @@ export interface AreasType {
     area:boolean,
     setArea:(area:boolean)=>void
 }
+
+export interface BedroomsType {
+    bedrooms:boolean,
+    setBedrooms:(bedrooms:boolean)=>void,
+    bedroomsNum:boolean,
+    setBedroomsNum:(bedrooms:boolean)=>void
+}

@@ -57,8 +57,8 @@ function Area({areaTo,areaFrom,areaError,setAreaError,area,setArea}:AreasType) {
               </div>
               <p className={`absolute top-[50px] text-[12px] text-[#f93b1d] ${areaError?"":"hidden"} `} >ჩაწერეთ ვალიდური მონაცემები</p>
             </div>
-            <div className=" flex justify-end w-[100%]" >
-            <button className="px-[14px] py-[8px] text-[14px] bg-[#f93b1d] rounded-[8px] mt-[32px] self-end " onClick={() => {if(!areaError){setArea(false)}}}>
+            <div className=" flex justify-end w-[100%] mt-[32px]" >
+            <button className="px-[14px] py-[8px] text-[14px] bg-[#f93b1d] rounded-[8px]  self-end " onClick={() => {if(!areaError){setArea(false)}}}>
               არჩევა
             </button>
             </div>
