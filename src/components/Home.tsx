@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import arrow from "/arrow.png";
 import Regions from "./regions";
 import Prices from "./prices";
+import Area from "./Areas";
 function Home() {
   const [region, setRegion] = useState<boolean>(false);
   const [price, setPrice] = useState<boolean>(false);
@@ -10,10 +11,12 @@ function Home() {
   const [regionsChecked, setRegionsChecked] = useState<string[]>([]);
 
   const [priceError,setPriceError] = useState<boolean>(false)
-
   const priceFrom = useRef<HTMLInputElement>(null);
   const priceTo = useRef<HTMLInputElement>(null);
 
+  const [areaError,setAreaError] = useState<boolean>(false)
+  const areaFrom = useRef<HTMLInputElement>(null)
+  const areaTo = useRef<HTMLInputElement>(null)
 
   return (
     <section className="mx-[65px] mt-[15px]">
@@ -72,7 +75,15 @@ function Home() {
               area ? "bg-[#f3f3f3]" : ""
             } `}
             onClick={() => {
-              setArea(!area);
+              if(areaError){
+                setArea(!area);
+                if(areaTo.current)areaTo.current.value = ''
+                if(areaFrom.current)areaFrom.current.value = ''
+                setAreaError(false)
+              }else{
+                setArea(!area);
+              }
+              
             }}
           >
             ფართობი
@@ -84,6 +95,7 @@ function Home() {
               }`}
             />
           </button>
+              <Area areaTo={areaTo} areaFrom={areaFrom} areaError={areaError} setAreaError={setAreaError} area={area} setArea={setArea} />
           <button
             className={`text-[#021526] text-[16px] font-bold flex gap-[4px] items-center px-[14px] py-[8px] rounded-[6px] ${
               bedrooms ? "bg-[#f3f3f3]" : ""

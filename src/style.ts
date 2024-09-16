@@ -14,3 +14,12 @@ export interface PricesType {
     price:boolean,
     setPrice:(price:boolean)=>void
 }
+
+export interface AreasType {
+    areaTo: React.RefObject<HTMLInputElement>,
+    areaFrom: React.RefObject<HTMLInputElement>,
+    areaError:boolean,
+    setAreaError:(areaError:boolean)=>void,
+    area:boolean,
+    setArea:(area:boolean)=>void
+}
