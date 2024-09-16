@@ -12,7 +12,8 @@ export interface PricesType {
     priceError:boolean,
     setPriceError:(priceError:boolean)=>void,
     price:boolean,
-    setPrice:(price:boolean)=>void
+    setPrice:(price:boolean)=>void,
+    setPrices:(prices:string)=>void
 }
 
 export interface AreasType {
@@ -21,12 +22,13 @@ export interface AreasType {
     areaError:boolean,
     setAreaError:(areaError:boolean)=>void,
     area:boolean,
-    setArea:(area:boolean)=>void
+    setArea:(area:boolean)=>void,
+    setAreas:(areas:string)=>void
 }
 
 export interface BedroomsType {
     bedrooms:boolean,
     setBedrooms:(bedrooms:boolean)=>void,
-    bedroomsNum:boolean,
-    setBedroomsNum:(bedrooms:boolean)=>void
+    bedroomsNum:string,
+    setBedroomsNum:(bedrooms:string)=>void
 }
