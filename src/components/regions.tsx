@@ -1,12 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import checkbox from '/checkbox.png'
+import { RegionsType } from '../style';
 
-interface RegionsType {
-    region:boolean,
-    setRegion:(value:boolean)=>void
-    regionsChecked:string[]
-    setRegionsChecked:(value:any)=>void
-}
 
 function Regions({region,setRegion,regionsChecked,setRegionsChecked}:RegionsType) {
 
@@ -27,7 +22,7 @@ function Regions({region,setRegion,regionsChecked,setRegionsChecked}:RegionsType
               region ? "" : "hidden"
             } border border-[#dbdbdb] rounded-[10px] `}
           >
-            <p className=" font-medium text-[16px] text-[#021526] " >რეგიონის მიხედვით</p>
+            <h1 className=" font-medium text-[16h1x] text-[#021526] " >რეგიონის მიხედვით</h1>
             <div className="grid grid-cols-3 mt-[24px] gap-y-[16px]" >
               <div className='relative flex items-center  '>
                 <div className={`w-[20px] h-[20px] absolute border border-[#dbdbdb] rounded-[2px] `} ><img src={checkbox} alt="checkbox" className={regionsChecked.includes('ქართლი')?'':'hidden'} /></div>

@@ -1,26 +1,26 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import arrow from "/arrow.png";
 import Regions from "./regions";
+import Prices from "./prices";
 function Home() {
   const [region, setRegion] = useState<boolean>(false);
   const [price, setPrice] = useState<boolean>(false);
   const [area, setArea] = useState<boolean>(false);
   const [bedrooms, setBedrooms] = useState<boolean>(false);
   const [regionsChecked, setRegionsChecked] = useState<string[]>([]);
-  // console.log(region,"region");
-  // console.log(price,"price");
-  // console.log(area,"area");
-  // console.log(bedrooms,"bedrooms");
-  console.log(regionsChecked);
 
-  
+  const [priceError,setPriceError] = useState<boolean>(false)
+
+  const priceFrom = useRef<HTMLInputElement>(null);
+  const priceTo = useRef<HTMLInputElement>(null);
+
 
   return (
     <section className="mx-[65px] mt-[15px]">
       <div className="flex justify-between ">
         <div className="flex gap-[24px] p-[6px] border border-[#dbdbdb] rounded-[10px] relative ">
           <button
-            className={`text-[#021526] text-[16px] flex gap-[4px] items-center px-[14px] py-[8px] rounded-[6px] ${
+            className={`text-[#021526] text-[16px] font-bold flex gap-[4px] items-center px-[14px] py-[8px] rounded-[6px] ${
               region ? "bg-[#f3f3f3]" : ""
             } `}
             onClick={() => {
@@ -36,13 +36,25 @@ function Home() {
               }`}
             />
           </button>
-          <Regions region={region} setRegion={setRegion} regionsChecked={regionsChecked} setRegionsChecked={setRegionsChecked} />
+          <Regions
+            region={region}
+            setRegion={setRegion}
+            regionsChecked={regionsChecked}
+            setRegionsChecked={setRegionsChecked}
+          />
           <button
-            className={`text-[#021526] text-[16px] flex gap-[4px] items-center px-[14px] py-[8px] rounded-[6px] ${
+            className={`text-[#021526] text-[16px] font-bold flex gap-[4px] items-center px-[14px] py-[8px] rounded-[6px] ${
               price ? "bg-[#f3f3f3]" : ""
             } `}
             onClick={() => {
-              setPrice(!price);
+              if(priceError){
+                setPrice(!price);
+                if(priceTo.current)priceTo.current.value = ''
+                if(priceFrom.current)priceFrom.current.value = ''
+                setPriceError(false)
+              }else{
+                setPrice(!price);
+              }
             }}
           >
             საფასო კატეგორია
@@ -54,8 +66,9 @@ function Home() {
               }`}
             />
           </button>
+          <Prices priceTo={priceTo} priceFrom={priceFrom} priceError={priceError} setPriceError={setPriceError} price={price} setPrice={setPrice}/>
           <button
-            className={`text-[#021526] text-[16px] flex gap-[4px] items-center px-[14px] py-[8px] rounded-[6px] ${
+            className={`text-[#021526] text-[16px] font-bold flex gap-[4px] items-center px-[14px] py-[8px] rounded-[6px] ${
               area ? "bg-[#f3f3f3]" : ""
             } `}
             onClick={() => {
@@ -72,7 +85,7 @@ function Home() {
             />
           </button>
           <button
-            className={`text-[#021526] text-[16px] flex gap-[4px] items-center px-[14px] py-[8px] rounded-[6px] ${
+            className={`text-[#021526] text-[16px] font-bold flex gap-[4px] items-center px-[14px] py-[8px] rounded-[6px] ${
               bedrooms ? "bg-[#f3f3f3]" : ""
             } `}
             onClick={() => {
