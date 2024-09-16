@@ -12,24 +12,26 @@ function Prices({
   function priceFromButtons(Price: string) {
     if (
       priceTo.current?.value &&
-      Number(Price) > Number(priceTo.current?.value)
+      Number(Price) >= Number(priceTo.current?.value)
     ) {
       setPriceError(true);
     } else {
       setPriceError(false);
       if (priceFrom.current) priceFrom.current.value = Price;
+      localStorage.setItem("priceFrom",Price)
     }
   }
 
   function priceToButtons(Price: string) {
     if (
       priceFrom.current?.value &&
-      Number(Price) < Number(priceFrom.current?.value)
+      Number(Price) <= Number(priceFrom.current?.value)
     ) {
       setPriceError(true);
     } else {
       setPriceError(false);
       if (priceTo.current) priceTo.current.value = Price;
+      localStorage.setItem("priceTo",Price)
     }
   }
 
@@ -40,7 +42,7 @@ function Prices({
           price ? "" : "hidden"
         } `}
       >
-        <h1 className="text-[16px] text-[#021526] font-bold">ფასის მიხედვით</h1>
+        <h1 className="text-[16px] text-[#021526] font-medium">ფასის მიხედვით</h1>
         <div className="mt-[24px] w-[100%] flex justify-between relative ">
           <div>
             <div
@@ -58,6 +60,7 @@ function Prices({
                     setPriceError(true);
                   } else {
                     setPriceError(false);
+                    localStorage.setItem("priceFrom",e.target.value)
                   }
                 }}
                 ref={priceFrom}
@@ -120,11 +123,12 @@ function Prices({
                 type="number"
                 onChange={(e) => {
                   if (
-                    Number(e.target.value) < Number(priceFrom.current?.value)
+                    Number(e.target.value) <= Number(priceFrom.current?.value)
                   ) {
                     setPriceError(true);
                   } else {
                     setPriceError(false);
+                    localStorage.setItem("priceTo",e.target.value)
                   }
                 }}
                 ref={priceTo}
@@ -200,7 +204,8 @@ function Prices({
                         priceFrom.current?.value != ""
                             ? parseInt(Number(priceFrom.current?.value))
                         : "0"
-                    }₾ - ${parseInt(Number(priceTo.current?.value))}₾`;                    
+                    }₾ - ${parseInt(Number(priceTo.current?.value))}₾`;  
+                    if(priceFrom.current?.value == ""){ priceFrom.current.value = "0";localStorage.setItem("priceFrom","0")}                  
                 setPrices(priceString);
                 
               }

@@ -32,3 +32,24 @@ export interface BedroomsType {
     bedroomsNum:string,
     setBedroomsNum:(bedrooms:string)=>void
 }
+
+export interface RealEstate {
+    id: number;
+    address: string;
+    zip_code: string;
+    price: number;
+    area: number;
+    bedrooms: number;
+    image: string;
+    is_rental: number;
+    city_id: number;
+    city: {
+      id: number;
+      name: string;
+      region_id: number;
+      region: {
+        id: number;
+        name: string;
+      };
+    };
+  }

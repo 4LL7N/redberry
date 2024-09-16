@@ -8,9 +8,13 @@ function Regions({region,setRegion,regionsChecked,setRegionsChecked}:RegionsType
     const regionCheck = (regionName: string) => {
         setRegionsChecked((prevRegions:any) => {
           if (prevRegions.includes(regionName)) {
-            return prevRegions.filter((region:any) => region !== regionName);
+            const arr = prevRegions.filter((region:any) => region !== regionName)
+            localStorage.setItem("Regions",JSON.stringify(arr))
+            return arr ;
           } else {
-            return [...prevRegions, regionName];
+            const arr = [...prevRegions, regionName]
+            localStorage.setItem("Regions",JSON.stringify(arr))
+            return arr;
           }
         });
       };

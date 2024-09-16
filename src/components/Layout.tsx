@@ -8,9 +8,9 @@ function Layout() {
   useEffect(()=>{navigate('/home')},[])
   return (
     <>
-    <div className="bg-[#fff] min-h-[100vh]" >
+    <div className="bg-[#fff] min-h-[100vh] flex flex-col " >
       <Header/>
-      <div className="px-[97px] pt-[62px]" >
+      <div className="px-[97px] pt-[62px]  h-full flex-grow " >
       <Outlet/>
       </div>
     </div>

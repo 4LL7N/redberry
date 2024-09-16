@@ -10,23 +10,25 @@ function Area({
   setAreas,
 }: AreasType) {
   function areaFromButtons(Area: string) {
-    if (areaTo.current?.value && Number(Area) > Number(areaTo.current?.value)) {
+    if (areaTo.current?.value && Number(Area) >= Number(areaTo.current?.value)) {
       setAreaError(true);
     } else {
       setAreaError(false);
       if (areaFrom.current) areaFrom.current.value = Area;
+      localStorage.setItem("areaFrom",Area)
     }
   }
 
   function areaToButtons(Area: string) {
     if (
       areaFrom.current?.value &&
-      Number(Area) < Number(areaFrom.current?.value)
+      Number(Area) <= Number(areaFrom.current?.value)
     ) {
       setAreaError(true);
     } else {
       setAreaError(false);
       if (areaTo.current) areaTo.current.value = Area;
+      localStorage.setItem("areaTo",Area)
     }
   }
 
@@ -37,7 +39,7 @@ function Area({
           area ? "" : "hidden"
         } `}
       >
-        <h1 className="text-[16px] text-[#021526] font-bold">
+        <h1 className="text-[16px] text-[#021526] font-medium">
           ფრთობის მიხედვით
         </h1>
         <div className="mt-[24px] w-[100%] flex justify-between relative ">
@@ -52,10 +54,11 @@ function Area({
                 onChange={(e) => {
                   if (
                     areaTo.current?.value &&
-                    Number(e.target.value) > Number(areaTo.current?.value)
+                    Number(e.target.value) >= Number(areaTo.current?.value)
                   ) {
                     setAreaError(true);
                   } else {
+                    localStorage.setItem("areaFrom",e.target.value)
                     setAreaError(false);
                   }
                 }}
@@ -73,6 +76,7 @@ function Area({
                 className="text-[14px] text-[#2d3648]"
                 onClick={() => {
                   areaFromButtons("50");
+                  
                 }}
               >
                 50 მ<sup className="text-[10px] relative top-[-5px]">2</sup>
@@ -81,6 +85,7 @@ function Area({
                 className="text-[14px] text-[#2d3648]"
                 onClick={() => {
                   areaFromButtons("75");
+                  
                 }}
               >
                 75 მ<sup className="text-[10px] relative top-[-5px]">2</sup>
@@ -89,6 +94,7 @@ function Area({
                 className="text-[14px] text-[#2d3648]"
                 onClick={() => {
                   areaFromButtons("100");
+                  
                 }}
               >
                 100 მ<sup className="text-[10px] relative top-[-5px]">2</sup>
@@ -97,6 +103,7 @@ function Area({
                 className="text-[14px] text-[#2d3648]"
                 onClick={() => {
                   areaFromButtons("150");
+                  
                 }}
               >
                 150 მ<sup className="text-[10px] relative top-[-5px]">2</sup>
@@ -105,6 +112,7 @@ function Area({
                 className="text-[14px] text-[#2d3648]"
                 onClick={() => {
                   areaFromButtons("200");
+                 
                 }}
               >
                 200 მ<sup className="text-[10px] relative top-[-5px]">2</sup>
@@ -125,6 +133,7 @@ function Area({
                   ) {
                     setAreaError(true);
                   } else {
+                    localStorage.setItem("areaTo",e.target.value)
                     setAreaError(false);
                   }
                 }}
@@ -142,6 +151,7 @@ function Area({
                 className="text-[14px] text-[#2d3648]"
                 onClick={() => {
                   areaToButtons("50");
+                  
                 }}
               >
                 50 მ<sup className="text-[10px] relative top-[-5px]">2</sup>
@@ -150,6 +160,7 @@ function Area({
                 className="text-[14px] text-[#2d3648]"
                 onClick={() => {
                   areaToButtons("75");
+                  
                 }}
               >
                 75 მ<sup className="text-[10px] relative top-[-5px]">2</sup>
@@ -158,6 +169,7 @@ function Area({
                 className="text-[14px] text-[#2d3648]"
                 onClick={() => {
                   areaToButtons("100");
+                  
                 }}
               >
                 100 მ<sup className="text-[10px] relative top-[-5px]">2</sup>
@@ -166,6 +178,7 @@ function Area({
                 className="text-[14px] text-[#2d3648]"
                 onClick={() => {
                   areaToButtons("150");
+                  
                 }}
               >
                 150 მ<sup className="text-[10px] relative top-[-5px]">2</sup>
@@ -174,6 +187,7 @@ function Area({
                 className="text-[14px] text-[#2d3648]"
                 onClick={() => {
                   areaToButtons("200");
+                  
                 }}
               >
                 200 მ<sup className="text-[10px] relative top-[-5px]">2</sup>
@@ -200,7 +214,7 @@ function Area({
                         ? parseInt(Number(areaFrom.current?.value))
                         : "0"
                     }მ² - ${parseInt(Number(areaTo.current?.value))}მ²`;
-  
+                    if(areaFrom.current?.value == ""){ areaFrom.current.value = "0";localStorage.setItem("areaFrom","0")}
                     setAreas(areaString);
                     setArea(false);
                 }

@@ -13,7 +13,7 @@ function Bedrooms({
           bedrooms ? "" : "hidden"
         } `}
       >
-        <h1 className="text-[16px] text-[#021526] font-bold ">
+        <h1 className="text-[16px] text-[#021526] font-medium ">
           საძინებლების რაოდენობა
         </h1>
         <div className="flex gap-[8px] ">
@@ -24,8 +24,10 @@ function Bedrooms({
             onClick={() => {
                 if(bedroomsNum == "1" ){
                     setBedroomsNum("");
+                    localStorage.setItem('BedroomsNum',"")
                 }else if(bedroomsNum == ""){
                     setBedroomsNum("1") 
+                    localStorage.setItem('BedroomsNum',"1")
                 }
             }}
           >
@@ -44,8 +46,10 @@ function Bedrooms({
             onClick={() => {
                 if(bedroomsNum == "2" ){
                     setBedroomsNum("");
+                    localStorage.setItem('BedroomsNum',"")
                 }else if(bedroomsNum == ""){
                     setBedroomsNum("2") 
+                    localStorage.setItem('BedroomsNum',"2")
                 }
             }}
           >
