@@ -1,4 +1,4 @@
-import { AreasType } from "../style";
+import { AreasType, } from "../style";
 
 function Area({
   areaTo,
@@ -8,6 +8,7 @@ function Area({
   area,
   setArea,
   setAreas,
+  filter
 }: AreasType) {
   function areaFromButtons(Area: string) {
     if (areaTo.current?.value && Number(Area) >= Number(areaTo.current?.value)) {
@@ -37,7 +38,7 @@ function Area({
       <div
         className={`absolute left-[398px] top-[57px] p-[24px] w-[382px] bg-[#ffff] border border-[#dbdbdb] rounded-[10px] ${
           area ? "" : "hidden"
-        } `}
+        } z-[1] `}
       >
         <h1 className="text-[16px] text-[#021526] font-medium">
           ფრთობის მიხედვით
@@ -129,7 +130,7 @@ function Area({
                 type="number"
                 onChange={(e) => {
                   if (
-                    Number(e.target.value) < Number(areaFrom.current?.value)
+                    Number(e.target.value) <= Number(areaFrom.current?.value)
                   ) {
                     setAreaError(true);
                   } else {
@@ -208,16 +209,26 @@ function Area({
             onClick={() => {
                 if(areaFrom.current?.value != "" && areaTo.current?.value == "" ){
                     setAreaError(true)
+                    localStorage.setItem("areaFrom","")
+                    localStorage.setItem("areaTo","")
+                }else if(areaFrom.current?.value == "" && areaTo.current?.value == ""){
+                  setAreas('')
+                  setArea(false);
+                  localStorage.setItem("areaFrom","")
+                    localStorage.setItem("areaTo","")
                 }else if (!areaError) {
                     const areaString = `${
                       areaFrom.current?.value != ""
-                        ? parseInt(Number(areaFrom.current?.value))
+                        ? parseInt(areaFrom.current?.value)
                         : "0"
-                    }მ² - ${parseInt(Number(areaTo.current?.value))}მ²`;
+                    }მ² - ${parseInt(areaTo.current?.value)}მ²`;
                     if(areaFrom.current?.value == ""){ areaFrom.current.value = "0";localStorage.setItem("areaFrom","0")}
                     setAreas(areaString);
                     setArea(false);
+                    filter()
+                    
                 }
+
               }
             }
           >

@@ -3,34 +3,39 @@ export interface RegionsType {
     region:boolean,
     setRegion:(value:boolean)=>void
     regionsChecked:string[]
-    setRegionsChecked:(value:any)=>void
+    setRegionsChecked:(value:any)=>void,
+    filter:()=>void
 }
 
 export interface PricesType {
-    priceTo: React.RefObject<HTMLInputElement>,
-    priceFrom: React.RefObject<HTMLInputElement>,
+    priceTo: any,
+    priceFrom: any,
     priceError:boolean,
     setPriceError:(priceError:boolean)=>void,
     price:boolean,
     setPrice:(price:boolean)=>void,
-    setPrices:(prices:string)=>void
+    setPrices:(prices:string)=>void,
+    filter:()=>void
 }
 
 export interface AreasType {
-    areaTo: React.RefObject<HTMLInputElement>,
-    areaFrom: React.RefObject<HTMLInputElement>,
+    areaTo: any,
+    areaFrom: any,
     areaError:boolean,
     setAreaError:(areaError:boolean)=>void,
     area:boolean,
     setArea:(area:boolean)=>void,
-    setAreas:(areas:string)=>void
+    setAreas:(areas:string)=>void,
+    filter:()=>void
 }
 
 export interface BedroomsType {
     bedrooms:boolean,
     setBedrooms:(bedrooms:boolean)=>void,
     bedroomsNum:string,
-    setBedroomsNum:(bedrooms:string)=>void
+    setBedroomsNum:(bedrooms:string)=>void,
+    bedroomsRef:any
+    filter:()=>void
 }
 
 export interface RealEstate {

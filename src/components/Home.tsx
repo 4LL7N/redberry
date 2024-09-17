@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from "react";
 import arrow from "/arrow.png";
 import Regions from "./regions";
@@ -31,7 +32,9 @@ function Home() {
   const [areas, setAreas] = useState<string>("");
 
   const [bedroomsNum, setBedroomsNum] = useState<string>("");
+  const bedroomsRef = useRef<HTMLInputElement>()
 
+  const [data,setData] = useState<RealEstate[]>([])
   const [houses,setHouses] = useState<RealEstate[]>([])
 
   function deleteRegion(region: string) {
@@ -41,42 +44,97 @@ function Home() {
     setRegionsChecked(arr);
   }
 
-  useEffect(() => {
+  function filter(){
     const AreaFrom = localStorage?.getItem("areaFrom");
-    if (AreaFrom && areaFrom.current) areaFrom.current.value = AreaFrom;
     const AreaTo = localStorage?.getItem("areaTo");
+    const PriceFrom = localStorage?.getItem("priceFrom");
+    const PriceTo = localStorage?.getItem("priceTo");
+
+    const BedroomsNum = localStorage.getItem('BedroomsNum')
+
+    let RegionArr:any = localStorage.getItem("Regions")
+    if(RegionArr)RegionArr=JSON.parse(RegionArr)
+
+    let houseData = data
+
+    if(AreaTo != "" && AreaFrom != "" && houseData){
+      console.log("sad");
+      
+      houseData = houseData.filter((item: any) => {
+        const itemArea = parseFloat(item.area); 
+        const minArea = parseFloat(AreaFrom || "0");
+        const maxArea = parseFloat(AreaTo || "0")
+
+        return !isNaN(itemArea) && itemArea >= minArea && itemArea <= maxArea; 
+      })
+      console.log("2");
+      
+    }
+    if(PriceTo != "" && PriceFrom != "" && houseData){
+      console.log('3');
+      
+      houseData = houseData.filter((item: any) => {
+        const itemPrice = parseFloat(item.price); // Use parseFloat for floating-point numbers
+        const minPrice = parseFloat(PriceFrom || "0"); // Default to 0 if value is undefined
+        const maxPrice = parseFloat(PriceTo || "0")
+
+        return !isNaN(itemPrice) && itemPrice >= minPrice && itemPrice <= maxPrice; // Filter based on parsed numbers
+      });
+    }
+    if(RegionArr.length > 0){
+      houseData = houseData.filter((item:RealEstate)=>{
+        return RegionArr.includes(item.city.region.name)
+      })
+    }
+    if(BedroomsNum){
+      houseData = houseData.filter((item:RealEstate)=>{
+        if(BedroomsNum == ""){
+          return true
+        }else{
+          return item.bedrooms == Number(BedroomsNum)
+        }
+      })
+    }
+    setHouses(houseData)
+  }
+
+  useEffect(() => {
+    const AreaFrom:any = localStorage?.getItem("areaFrom");
+    if (AreaFrom && areaFrom.current) areaFrom.current.value = AreaFrom;
+    const AreaTo:any = localStorage?.getItem("areaTo");
     if (AreaTo && areaTo.current) areaTo.current.value = AreaTo;
+
+    const areaString = `${
+      areaFrom.current?.value != "" ? parseInt(AreaFrom) : "0"
+    }მ² - ${parseInt(AreaTo)}მ²`;
     if (AreaTo != "" && AreaFrom != "") {
-      const areaString = `${
-        areaFrom.current?.value != "" ? parseInt(Number(AreaFrom)) : "0"
-      }მ² - ${parseInt(Number(AreaTo))}მ²`;
       setAreas(areaString);
     }
 
-    const PriceFrom = localStorage?.getItem("priceFrom");
+    const PriceFrom:any = localStorage?.getItem("priceFrom");
     if (PriceFrom && priceFrom.current) priceFrom.current.value = PriceFrom;
-    const PriceTo = localStorage?.getItem("priceTo");
+    const PriceTo:any = localStorage?.getItem("priceTo");
     if (PriceTo && priceTo.current) priceTo.current.value = PriceTo;
 
     if (PriceTo != "" && PriceFrom != "") {
       const priceString = `${
         priceFrom.current?.value != ""
-          ? parseInt(Number(priceFrom.current?.value))
+          ? parseInt(PriceFrom)
           : "0"
-      }₾ - ${parseInt(Number(priceTo.current?.value))}₾`;
+      }₾ - ${parseInt(PriceTo)}₾`;
       setPrices(priceString);
     }
 
-    const RegionArr = localStorage.getItem("Regions")
-    if(RegionArr)setRegionsChecked(JSON.parse(RegionArr))
+    let RegionArr:any = localStorage.getItem("Regions")
+    if(RegionArr)setRegionsChecked(JSON.parse(RegionArr));RegionArr=JSON.parse(RegionArr)
 
-      const BedroomsNum = localStorage.getItem('BedroomsNum')
-      if(BedroomsNum)setBedroomsNum(BedroomsNum)
+    const BedroomsNum:any = localStorage.getItem('BedroomsNum')
+    if(BedroomsNum )setBedroomsNum(BedroomsNum);
+    if(bedroomsRef.current)bedroomsRef.current.value = BedroomsNum
+    let houseData:RealEstate[]=[]
 
     const fetchData = async () =>{
-      console.log("before");
       try{ 
-        
         const response = await fetch("https://api.real-estate-manager.redberryinternship.ge/api/real-estates",{
           method:'GET',
           headers:{
@@ -86,15 +144,51 @@ function Home() {
         })        
         if(!response.ok)throw new Error(`HTTP ERRor! status: ${response.status} `)
           const data = await response.json()
-        setHouses(data)
+          setData(data)
+          houseData=data
+
+          if(AreaTo != "" && AreaFrom != "" && houseData){
+            
+            houseData = houseData.filter((item: any) => {
+              const itemArea = parseFloat(item.area); 
+              const minArea = parseFloat(AreaFrom || "0");
+              const maxArea = parseFloat(AreaTo || "0")
+      
+              return !isNaN(itemArea) && itemArea >= minArea && itemArea <= maxArea; 
+            })
+            
+          }
+          if(PriceTo != "" && PriceFrom != "" && houseData){
+          houseData = houseData.filter((item: any) => {
+            const itemPrice = parseFloat(item.price); // Use parseFloat for floating-point numbers
+            const minPrice = parseFloat(PriceFrom || "0"); // Default to 0 if value is undefined
+            const maxPrice = parseFloat(PriceTo || "0")
+            
+            return !isNaN(itemPrice) && itemPrice >= minPrice && itemPrice <= maxPrice;
+          });    
+        }
+        if(RegionArr?.length && JSON.parse(RegionArr?.length) > 0){
+          console.log(houseData,"1");
+          console.log(RegionArr,RegionArr?.length);
+          
+          houseData=houseData.filter((item:RealEstate)=>{
+            return RegionArr.includes(item.city.region.name)
+          })
+        } 
+
+          setHouses(houseData)
+          
       }catch(err){
         console.log("Error",err);
         
       }
     }
     fetchData()
+
+    
+    
+
   }, []);
-  console.log(houses);
   
   return (
     <section className="mx-[65px] mt-[15px] flex flex-col pb-[228px] ">
@@ -122,6 +216,7 @@ function Home() {
             setRegion={setRegion}
             regionsChecked={regionsChecked}
             setRegionsChecked={setRegionsChecked}
+            filter={filter}
           />
           <button
             className={`text-[#021526] text-[16px] font-medium flex gap-[4px] items-center px-[14px] py-[8px] rounded-[6px] ${
@@ -137,17 +232,6 @@ function Home() {
                 localStorage?.setItem("priceFrom", "");
                 setPriceError(false);
               } else {
-                if (
-                  priceTo.current?.value != "" &&
-                  priceFrom.current?.value != ""
-                ) {
-                  const priceString = `${
-                    priceFrom.current?.value != ""
-                      ? parseInt(Number(priceFrom.current?.value))
-                      : "0"
-                  }₾ - ${parseInt(Number(priceTo.current?.value))}₾`;
-                  setPrices(priceString);
-                }
                 setPrice(!price);
               }
             }}
@@ -169,6 +253,7 @@ function Home() {
             price={price}
             setPrice={setPrice}
             setPrices={setPrices}
+            filter={filter}
           />
           <button
             className={`text-[#021526] text-[16px] font-medium flex gap-[4px] items-center px-[14px] py-[8px] rounded-[6px] ${
@@ -183,20 +268,6 @@ function Home() {
                 localStorage.setItem("areaFrom", "");
                 setAreaError(false);
               } else {
-                if (
-                  areaTo.current &&
-                  areaTo.current.value != "" &&
-                  areaFrom.current &&
-                  areaFrom.current.value != ""
-                ) {
-                  const areaString = `${
-                    areaFrom.current?.value != ""
-                      ? parseInt(Number(areaFrom.current?.value))
-                      : "0"
-                  }მ² - ${parseInt(Number(areaTo.current?.value))}მ²`;
-
-                  setAreas(areaString);
-                }
                 setArea(!area);
               }
             }}
@@ -218,6 +289,7 @@ function Home() {
             area={area}
             setArea={setArea}
             setAreas={setAreas}
+            filter={filter}
           />
           <button
             className={`text-[#021526] text-[16px] font-medium flex gap-[4px] items-center px-[14px] py-[8px] rounded-[6px] ${
@@ -241,6 +313,8 @@ function Home() {
             setBedrooms={setBedrooms}
             bedroomsNum={bedroomsNum}
             setBedroomsNum={setBedroomsNum}
+            bedroomsRef={bedroomsRef}
+            filter={filter}
           />
         </div>
         <div className="flex gap-[16px]">
@@ -275,6 +349,7 @@ function Home() {
                       className="w-[14px] h-[14px] "
                       onClick={() => {
                         deleteRegion(item);
+                        filter()
                       }}
                     />
                   </div>
@@ -298,6 +373,7 @@ function Home() {
                   localStorage?.setItem("priceTo", "");
                   if (priceFrom.current) priceFrom.current.value = "";
                   localStorage?.setItem("priceFrom", "");
+                  filter()
                 }}
               />
             </div>
@@ -319,6 +395,7 @@ function Home() {
                   localStorage.setItem("areaTo", "");
                   if (areaFrom.current) areaFrom.current.value = "";
                   localStorage.setItem("areaFrom", "");
+                  filter()
                 }}
               />
             </div>
@@ -339,6 +416,8 @@ function Home() {
             onClick={() => {
               setBedroomsNum("");
               localStorage.setItem('BedroomsNum',"")
+              if(bedroomsRef.current)bedroomsRef.current.value = ""
+              filter()
             }}
           />
         </div>
@@ -363,13 +442,15 @@ function Home() {
               localStorage?.setItem("priceFrom", "");
               setBedroomsNum("");
               localStorage.setItem('BedroomsNum',"")
+              if(bedroomsRef.current)bedroomsRef.current.value = ""
+              filter()
             }}
           >
             გასუფთავება
           </button>
         ) : null}
       </div>
-      <div className="flex-grow grid grid-cols-4 gap-y-[20px] mt-[32px] ">
+      <div className="flex-grow grid grid-cols-4 gap-y-[20px] mt-[32px]  ">
         {houses? houses.map((item:RealEstate) => {
           return(
             <>  

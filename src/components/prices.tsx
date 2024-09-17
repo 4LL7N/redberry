@@ -8,6 +8,7 @@ function Prices({
   price,
   setPrice,
   setPrices,
+  filter,
 }: PricesType) {
   function priceFromButtons(Price: string) {
     if (
@@ -18,7 +19,7 @@ function Prices({
     } else {
       setPriceError(false);
       if (priceFrom.current) priceFrom.current.value = Price;
-      localStorage.setItem("priceFrom",Price)
+      localStorage.setItem("priceFrom", Price);
     }
   }
 
@@ -31,7 +32,7 @@ function Prices({
     } else {
       setPriceError(false);
       if (priceTo.current) priceTo.current.value = Price;
-      localStorage.setItem("priceTo",Price)
+      localStorage.setItem("priceTo", Price);
     }
   }
 
@@ -40,9 +41,11 @@ function Prices({
       <div
         className={`absolute left-[155px] top-[57px] p-[24px] w-[382px] bg-[#ffff] border border-[#dbdbdb] rounded-[10px] ${
           price ? "" : "hidden"
-        } `}
+        }  z-[1] `}
       >
-        <h1 className="text-[16px] text-[#021526] font-medium">ფასის მიხედვით</h1>
+        <h1 className="text-[16px] text-[#021526] font-medium">
+          ფასის მიხედვით
+        </h1>
         <div className="mt-[24px] w-[100%] flex justify-between relative ">
           <div>
             <div
@@ -60,7 +63,7 @@ function Prices({
                     setPriceError(true);
                   } else {
                     setPriceError(false);
-                    localStorage.setItem("priceFrom",e.target.value)
+                    localStorage.setItem("priceFrom", e.target.value);
                   }
                 }}
                 ref={priceFrom}
@@ -128,7 +131,7 @@ function Prices({
                     setPriceError(true);
                   } else {
                     setPriceError(false);
-                    localStorage.setItem("priceTo",e.target.value)
+                    localStorage.setItem("priceTo", e.target.value);
                   }
                 }}
                 ref={priceTo}
@@ -194,20 +197,34 @@ function Prices({
         <div className=" flex justify-end w-[100%] mt-[32px]">
           <button
             className="px-[14px] py-[8px] text-[14px] bg-[#f93b1d] rounded-[8px]  self-end "
-            onClick={() => {                
-                if(priceFrom.current?.value != "" && priceTo.current?.value == "" ){                    
-                    setPriceError(true)
-                }else if (!priceError) {                    
+            onClick={() => {
+              if (
+                priceFrom.current?.value != "" &&
+                priceTo.current?.value == ""
+              ) {
+                setPriceError(true);
+              } else if (
+                priceFrom.current?.value == "" &&
+                priceTo.current?.value == ""
+              ) {
                 setPrice(false);
-                                    
-                    const priceString = `${
-                        priceFrom.current?.value != ""
-                            ? parseInt(Number(priceFrom.current?.value))
-                        : "0"
-                    }₾ - ${parseInt(Number(priceTo.current?.value))}₾`;  
-                    if(priceFrom.current?.value == ""){ priceFrom.current.value = "0";localStorage.setItem("priceFrom","0")}                  
+                setPrices("");
+                localStorage.setItem("priceTo", "");
+                localStorage.setItem("priceFrom", "");
+              } else if (!priceError) {
+                setPrice(false);
+
+                const priceString = `${
+                  priceFrom.current?.value != ""
+                    ? parseInt(priceFrom.current?.value)
+                    : "0"
+                }₾ - ${parseInt(priceTo.current?.value)}₾`;
+                if (priceFrom.current?.value == "") {
+                  priceFrom.current.value = "0";
+                  localStorage.setItem("priceFrom", "0");
+                }
                 setPrices(priceString);
-                
+                filter();
               }
             }}
           >
