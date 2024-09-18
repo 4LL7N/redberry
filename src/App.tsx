@@ -2,6 +2,10 @@ import { createBrowserRouter, RouterProvider, } from "react-router-dom"
 import Layout from "./components/Layout"
 import Home from "./components/Home"
 import Listing from "./components/Listing"
+import { createContext, useState } from "react"
+import { RealEstateContextType } from "./style"
+
+export const RealEstateContext = createContext<RealEstateContextType|null>(null)
 
 function App() {
   
@@ -22,10 +26,15 @@ function App() {
     }
   ])
   
+  
+  const [deleteListing,setDeleteListing] = useState<boolean>(false)
+  
 
   return (
     <>
-      <RouterProvider router={router}/>
+      <RealEstateContext.Provider value={{deleteListing,setDeleteListing}} >
+        <RouterProvider router={router}/>
+      </RealEstateContext.Provider>
     </>
   )
 }

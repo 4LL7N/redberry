@@ -5,7 +5,6 @@ import Regions from "./regions";
 import Prices from "./prices";
 import Area from "./Areas";
 import Bedrooms from "./Bedrooms";
-import redPlus from "/redPlus.png";
 import whitePlus from "/whitePlus.png";
 import Delete from "/delete.png";
 import { RealEstate } from "../style";
@@ -40,6 +39,7 @@ function Home() {
   const [data,setData] = useState<RealEstate[]>([])
   const [houses,setHouses] = useState<RealEstate[]>([])
 
+  const [plusIcon,setPlusIcon] = useState<string>('/redPlus.png')
   function deleteRegion(region: string) {
     let arr = regionsChecked;
     arr = arr.filter((item) => item != region);
@@ -187,11 +187,9 @@ function Home() {
       }
     }
     fetchData()
-
-    
-    
-
   }, []);
+  
+  
   
   return (
     <section className="mt-[15px] flex flex-col w-[1596px] pb-[228px]">
@@ -321,17 +319,17 @@ function Home() {
           />
         </div>
         <div className="flex gap-[16px]">
-          <div className=" flex items-center bg-[#f93b1d] rounded-[10px] px-[16px] py-[10px] ">
+          <div className=" flex items-center bg-[#f93b1d] hover:bg-[#DF3014] rounded-[10px] px-[16px] py-[10px] ">
             {" "}
             <img src={whitePlus} alt="whitePlus" className="mr-[2px]" />
             <p className="text-[16px] text-[#fff] font-medium ">
               ლისტინგის დამატება
             </p>{" "}
           </div>
-          <div className=" flex items-center border border-[#f93b1d] rounded-[10px] px-[16px] py-[10px] ">
+          <div onMouseEnter={()=>{setPlusIcon('/whitePlus.png')}} onMouseLeave={()=>{setPlusIcon('/redPlus.png')}} className=" flex items-center border border-[#f93b1d] hover:bg-[#f93b1d] text-[#f93b1d] hover:text-[#fff] rounded-[10px] px-[16px] py-[10px] ">
             {" "}
-            <img src={redPlus} alt="whitePlus" className="mr-[2px]" />
-            <p className="text-[16px] text-[#f93b1d] font-medium ">
+            <img src={plusIcon}   alt="whitePlus" className="mr-[2px]" />
+            <p className="text-[16px]  font-medium ">
               აგენტის დამატება
             </p>{" "}
           </div>

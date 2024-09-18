@@ -33,6 +33,9 @@ function Area({
     }
   }
 
+  console.log(Number(areaFrom.current?.value));
+  
+
   return (
     <>
       <div
@@ -55,12 +58,23 @@ function Area({
                 onChange={(e) => {
                   if (
                     areaTo.current?.value &&
-                    Number(e.target.value) >= Number(areaTo.current?.value)
+                    Number(e.target.value) >= Number(areaTo.current?.value) 
+                    
                   ) {
                     setAreaError(true);
                   } else {
-                    localStorage.setItem("areaFrom",e.target.value)
-                    setAreaError(false);
+                    // console.log(Number(e.target.value));
+                    // console.log(Number(areaTo.current?.value));
+                    
+                    if(Number(e.target.value) < 0 || Number(areaTo.current?.value) < 0){
+                      console.log("err");
+                      
+                      setAreaError(true)
+                    }else{
+
+                      localStorage.setItem("areaFrom",e.target.value)
+                      setAreaError(false);
+                    }
                   }
                 }}
                 ref={areaFrom}
@@ -134,8 +148,18 @@ function Area({
                   ) {
                     setAreaError(true);
                   } else {
-                    localStorage.setItem("areaTo",e.target.value)
+                    
+                    
+                    if(Number(e.target.value) < 0 || Number(areaFrom.current?.value) < 0){
+                      console.log("err");
+                      
+                      setAreaError(true)
+                    }else{
+
+                      localStorage.setItem("areaTo",e.target.value)
                     setAreaError(false);
+                    }
+                    
                   }
                 }}
                 ref={areaTo}

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import goBack from "/goBack.png";
 import right from "/rightArrow.png";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,6 +14,7 @@ import email from "/email.png";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { RealEstateContext } from "../App";
 
 function Listing() {
   const [listing, setListing] = useState<ListingType>();
@@ -24,6 +25,11 @@ function Listing() {
   const sliderRef = useRef<any>();
 
   const navigate = useNavigate();
+
+  const context = useContext(RealEstateContext)
+    
+    
+  
 
   useEffect(() => {
     let data: ListingType;
@@ -188,7 +194,7 @@ function Listing() {
                 </div>
               </div>
             </div>
-            <button className=" w-[133px] border border-[#676e76] rounded-[8px] p-[10px] text-[12px] text-[#676e76] font-medium mt-[20px] ">
+            <button className=" w-[133px] border border-[#676e76] hover:bg-[#676e76] rounded-[8px] p-[10px] text-[12px] text-[#676e76] hover:text-[#fff] font-medium mt-[20px] " onClick={()=>{context?.setDeleteListing(true)}} > 
               ლისტინგის წაშლა
             </button>
           </div>
@@ -360,6 +366,7 @@ function Listing() {
           </div>
         )}
       </section>
+
     </>
   );
 }

@@ -35,7 +35,7 @@ function Bedrooms({
               
             }}
             
-            className="bg-transparent outline-none w-[8px]  text-[#02152666] text-[17px]"
+            className="bg-transparent outline-none w-[8px] text-[#02152666] text-[17px]"
             ref={bedroomsRef}
           />
           </div>

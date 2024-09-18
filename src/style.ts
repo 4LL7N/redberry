@@ -90,3 +90,8 @@ export interface RealEstate {
     phone: string;
   };
   }
+
+ export interface RealEstateContextType{
+  deleteListing:boolean,
+  setDeleteListing:(deletListing:boolean)=>void
+ } 
