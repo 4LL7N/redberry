@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider, } from "react-router-dom"
 import Layout from "./components/Layout"
 import Home from "./components/Home"
+import Listing from "./components/Listing"
 
 function App() {
   
@@ -10,8 +11,12 @@ function App() {
       element:<Layout/>,
       children:[
         {
-          path:'/home',
+          path:'/',
           element:<Home/>
+        },
+        {
+          path:'/:listing',
+          element:<Listing/>
         }
       ]
     }

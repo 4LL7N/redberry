@@ -58,3 +58,35 @@ export interface RealEstate {
       };
     };
   }
+
+  export interface ListingType{
+    id: number;
+  address: string;
+  image: string;
+  zip_code: string;
+  description: string;
+  price: number;
+  bedrooms: number;
+  area: number;
+  is_rental: number;
+  agent_id: number;
+  city_id: number;
+  created_at: string;
+  city: {
+    id: number;
+    name: string;
+    region_id: number;
+    region: {
+      id: number;
+      name: string;
+    };
+  };
+  agent: {
+    id: number;
+    name: string;
+    surname: string;
+    email: string;
+    avatar: string;
+    phone: string;
+  };
+  }

@@ -13,8 +13,11 @@ import location from '/location.png'
 import bed from '/bed.png'
 import areaIcon from '/area.png'
 import zip from '/zip.png'
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate()
+
   const [region, setRegion] = useState<boolean>(false);
   const [price, setPrice] = useState<boolean>(false);
   const [area, setArea] = useState<boolean>(false);
@@ -191,7 +194,7 @@ function Home() {
   }, []);
   
   return (
-    <section className="mx-[65px] mt-[15px] flex flex-col pb-[228px] ">
+    <section className="mt-[15px] flex flex-col w-[1596px] pb-[228px]">
       <div className="flex justify-between ">
         <div className="flex gap-[24px] p-[6px] border border-[#dbdbdb] rounded-[10px] relative ">
           <button
@@ -450,11 +453,10 @@ function Home() {
           </button>
         ) : null}
       </div>
-      <div className="flex-grow grid grid-cols-4 gap-y-[20px] mt-[32px]  ">
-        {houses? houses.map((item:RealEstate) => {
+      <main className="flex-grow grid grid-cols-4 gap-y-[20px] mt-[32px]  ">
+        {houses? houses.map((item:RealEstate,i:number) => {
           return(
-            <>  
-              <div className="bg-[#fff] rounded-[14px] overflow-hidden w-[384px] flex flex-col " >
+              <div key={i} className="bg-[#fff] rounded-[14px] overflow-hidden w-[384px] flex flex-col " onClick={()=>{navigate(`${item.id}`)}}  >
                 <div className="relative" >
                   <img className=" w-[384px] h-[307px]" src={item.image} alt="" />
                   <div className="absolute left-[23px] top-[23px] bg-[#02152680] rounded-[15px] text-[12px] text-[#fff] px-[10px] py-[6px] font-medium " >ქირავდება</div>
@@ -472,11 +474,10 @@ function Home() {
                   </div>
                 </div>
               </div>
-            </>
           )
         })
         :null}
-      </div>
+      </main>
     </section>
   );
 }
