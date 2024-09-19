@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
@@ -12,6 +13,7 @@ function AddListing() {
     const[deal,setDeal] = useState<string>("იყიდება")
 
     const [addressError,setAddressError] = useState<boolean>(false)
+    const [zipError,setZipError] =  useState<boolean>(false)
 
   const {
     register,
@@ -22,37 +24,47 @@ function AddListing() {
   } = useForm();
 
   const onSubmit = (data) => {
-    if(errors.address){
-        setAddressError(true)
-    }
     console.log(data);
   };
 
-  const onError = (errors) => {
+  const onError = (errors:any) => {
     if(errors.address){
         setAddressError(true)
+    }
+    if(errors.zip){
+        setZipError(true)
     }
     console.log(errors);
   };
 
   useEffect(()=>{
-    const address = localStorage.getItem('address')
-    console.log(address);
-    
+    const address = localStorage.getItem('address')    
     if(address)setValue('address',address)
+
+    const zip = localStorage.getItem('zip')
+    if(zip)setValue('zip',zip)
   },[])
 
   useEffect(()=>{
     if(watch('address').length < 2 && watch('address') != "" ){
         setAddressError(true)
-        localStorage.setItem('address',watch('address'))
     }else{
         setAddressError(false)
-        localStorage.setItem('address',watch('address'))
     }
-    
+    localStorage.setItem('address',watch('address'))
   },[watch('address')])
-// console.log(watch('address').length);
+
+    useEffect(()=>{
+    const zip = watch('zip')    
+    console.log(zip);
+    
+    if(/^[0-9]+$/.test(zip) || zip == "" ){
+        setZipError(false)
+    }else{
+        setZipError(true)        
+    }
+    localStorage.setItem('zip',watch('zip'))
+  },[watch('zip')])
   
 
   
@@ -113,7 +125,14 @@ function AddListing() {
                     <p className={`text-[14px] ${addressError?"text-[#F93B1D]":!watch('address')?"text-[#021526]":"text-[#45A849]"} `}>მინიმუმ ორი სიმბოლო</p>
                     </div>
                 </div>
-                <div></div>
+                <div><h3 className="text-[14px] text-[#021526] font-medium mb-[5px] " >საფოსტო ინდექსი *</h3>
+                    <div className={`  border ${zipError?"border-[#F93B1D]":!watch('zip') ?"border-[#808a93]":"border-[#45A849]"}  p-[10px] rounded-[6px] `} >
+                        <input type="text" {...register('zip',{required:true})} className="text-[16px] text-[#021526] bg-transparent outline-none " />
+                    </div>
+                    <div className="flex items-center gap-[7px] mt-[4px]" >
+                    <img className="w-[12px] h-[11px] "  src={zipError?checkedError:!watch('zip')?checked:checkedCorrect} alt="" />
+                    <p className={`text-[14px] ${zipError?"text-[#F93B1D]":!watch('zip')?"text-[#021526]":"text-[#45A849]"} `}>მხოლოდ რიცხვები</p>
+                    </div></div>
             </div>
         </div>
         <div className="flex gap-[15px] mt-[90px]" > 
