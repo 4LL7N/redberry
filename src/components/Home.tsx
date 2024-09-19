@@ -319,13 +319,13 @@ function Home() {
           />
         </div>
         <div className="flex gap-[16px]">
-          <div className=" flex items-center bg-[#f93b1d] hover:bg-[#DF3014] rounded-[10px] px-[16px] py-[10px] ">
+          <button className=" flex items-center bg-[#f93b1d] hover:bg-[#DF3014] rounded-[10px] px-[16px] py-[10px] " onClick={()=>{navigate('/addlisting')}} >
             {" "}
             <img src={whitePlus} alt="whitePlus" className="mr-[2px]" />
             <p className="text-[16px] text-[#fff] font-medium ">
               ლისტინგის დამატება
             </p>{" "}
-          </div>
+          </button>
           <div onMouseEnter={()=>{setPlusIcon('/whitePlus.png')}} onMouseLeave={()=>{setPlusIcon('/redPlus.png')}} className=" flex items-center border border-[#f93b1d] hover:bg-[#f93b1d] text-[#f93b1d] hover:text-[#fff] rounded-[10px] px-[16px] py-[10px] ">
             {" "}
             <img src={plusIcon}   alt="whitePlus" className="mr-[2px]" />

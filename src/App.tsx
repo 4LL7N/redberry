@@ -4,6 +4,7 @@ import Home from "./components/Home"
 import Listing from "./components/Listing"
 import { createContext, useState } from "react"
 import { RealEstateContextType } from "./style"
+import AddListing from "./components/AddListing"
 
 export const RealEstateContext = createContext<RealEstateContextType|null>(null)
 
@@ -21,6 +22,10 @@ function App() {
         {
           path:'/:listing',
           element:<Listing/>
+        },
+        {
+          path:'/addlisting',
+          element:<AddListing/>
         }
       ]
     }
