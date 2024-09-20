@@ -95,3 +95,14 @@ export interface RealEstate {
   deleteListing:boolean,
   setDeleteListing:(deletListing:boolean)=>void
  } 
+
+ export interface RegionDataType {
+  id: number;
+  name: string;
+}
+
+export interface CityDataType {
+  id: number;
+  name: string;
+  region_id: number;
+}
