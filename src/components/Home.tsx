@@ -131,7 +131,7 @@ function Home() {
       houseData = MoreData
 
     }
-    if((PriceTo != ""  && PriceFrom != "" ) || (RegionArr!== null && RegionArr.length > 0) || BedroomsNum  || (AreaTo != "" && AreaFrom != "" )   ){
+    if((PriceTo != "" && PriceTo != null && PriceFrom != ""  && PriceFrom != null ) || (RegionArr != null && RegionArr.length > 0) || BedroomsNum != null || (AreaTo != "" && AreaTo != null && AreaFrom != "" && AreaFrom != null )  ){
       
     setHouses(houseData)
     }else{
@@ -265,7 +265,7 @@ function Home() {
           console.log((PriceTo != "" && PriceFrom != "" ) || (RegionArr && RegionArr.length > 0) || BedroomsNum || (AreaTo != "" && AreaFrom != "")  );
           console.log(AreaTo);
           
-          if((PriceTo != "" && PriceFrom != "" ) || (RegionArr && RegionArr.length > 0) || BedroomsNum || (AreaTo != "" && AreaFrom != "" )  ){            
+          if((PriceTo != "" && PriceTo != null && PriceFrom != ""  && PriceFrom != null ) || (RegionArr != null && RegionArr.length > 0) || BedroomsNum != null || (AreaTo != "" && AreaTo != null && AreaFrom != "" && AreaFrom != null )  ){            
             console.log("clear");
             
             setHouses(houseData)
