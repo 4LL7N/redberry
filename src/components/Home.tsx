@@ -146,22 +146,21 @@ function Home() {
     const AreaTo:any = localStorage?.getItem("areaTo");
     if (AreaTo && areaTo.current) areaTo.current.value = AreaTo;
 
+    if (AreaTo != "" && AreaTo !== null && AreaFrom != "" && AreaFrom !== null ) {
     const areaString = `${
       areaFrom.current?.value != "" ? parseInt(AreaFrom) : "0"
     }მ² - ${parseInt(AreaTo)}მ²`;
     if (AreaTo != "" && AreaFrom != "") {
       setAreas(areaString);
     }
+    }
 
-    const PriceFrom:any = localStorage?.getItem("priceFrom");
-    console.log(PriceFrom);
-    
+    const PriceFrom:any = localStorage?.getItem("priceFrom");    
     if (PriceFrom  && priceFrom.current) priceFrom.current.value = PriceFrom;
     const PriceTo:any = localStorage?.getItem("priceTo");
-    console.log(PriceTo);
     if (PriceTo && priceTo.current) priceTo.current.value = PriceTo;
 
-    if (PriceTo != "" && PriceFrom != "") {
+    if ((PriceTo != "" && PriceTo !== null) && PriceFrom != "" && PriceFrom !== null ) {
       const priceString = `${
         priceFrom.current?.value != ""
           ? parseInt(PriceFrom)
@@ -195,7 +194,7 @@ function Home() {
 
           let houseData:RealEstate[] = []
 
-          if(AreaTo != "" && AreaFrom != "" ){
+          if(AreaTo != "" && AreaTo !== null && AreaFrom != "" && AreaFrom !== null){
             
             houseData = data.filter((item: any) => {
               const itemArea = parseFloat(item.area); 
@@ -206,7 +205,7 @@ function Home() {
             })
             
           }
-          if(PriceTo != "" && PriceFrom != "" ){
+          if((PriceTo != "" && PriceTo !== null) && PriceFrom != "" && PriceFrom !== null){
             const Data = data.filter((item: any) => {
               const itemPrice = parseFloat(item.price); // Use parseFloat for floating-point numbers
               const minPrice = parseFloat(PriceFrom || "0"); // Default to 0 if value is undefined
@@ -263,9 +262,9 @@ function Home() {
             houseData = MoreData
       
           }
-          if((PriceTo != "" && PriceFrom != "") || (RegionArr.length > 0) || (BedroomsNum) || (AreaTo != "" && AreaFrom != "")  ){
-            
-          setHouses(houseData)
+          
+          if((PriceTo != "" && PriceTo != null && PriceFrom != "" && PriceFrom != "") || (RegionArr!== null && RegionArr.length > 0) || BedroomsNum !==null || (AreaTo != "" && AreaTo != null && AreaFrom != "" && AreaFrom != null)  ){            
+            setHouses(houseData)
           }else{
             setHouses(data)
           }

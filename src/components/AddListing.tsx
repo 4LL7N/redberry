@@ -51,18 +51,6 @@ function AddListing() {
     const Region:any = regions?.find((item) => item.name == chosenRegion)
     const City:any = cities?.find((item) => item.name == chosenCity)
 
-    console.log(data);
-    console.log(apiImage);
-    console.log(chosenAgent?.id);
-    console.log(chosenCity);
-    console.log(chosenRegion);
-    console.log(Region);
-    console.log(City);
-    
-    
-    
-
-
     const form = new FormData();
 
     form.append("region_id", Region.id);
@@ -154,7 +142,6 @@ function AddListing() {
     if (!image || !apiImage) {
       setImageError(true);
     }
-    console.log(errors);
   };
 
   useEffect(() => {
@@ -323,7 +310,6 @@ function AddListing() {
     const fileReader: any = new FileReader();
 
     fileReader.addEventListener("load", () => {
-      console.log(fileReader.result);
       localStorage.setItem("apiImage", fileReader.result);
     });
 

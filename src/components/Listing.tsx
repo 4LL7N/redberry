@@ -79,7 +79,6 @@ function Listing() {
     fetchCarouselData();
   }, [params.listing]);
 
-  //   console.log(listing);
   let date: Date | null | string | undefined = listing?.created_at
     ? new Date(listing?.created_at)
     : null;

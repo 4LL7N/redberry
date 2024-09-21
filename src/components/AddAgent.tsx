@@ -81,7 +81,6 @@ function AddAgent() {
     if (!image || !apiImage || image == "noImage") {
       setImageError(true);
     }
-    console.log(errors);
   };
 
   const handleImage = (e: any) => {
@@ -89,16 +88,6 @@ function AddAgent() {
     setApiImage(selectedFile);
 
     const Objurl = URL.createObjectURL(selectedFile);
-
-    // const selectedFile = e.target.files[0];
-    // const fileReader: any = new FileReader();
-
-    // fileReader.addEventListener("load", () => {
-    //   console.log(fileReader.result);
-    //   localStorage.setItem("apiImage", fileReader.result);
-    // });
-
-    // fileReader.readAsDataURL(selectedFile);
 
     setImage(Objurl);
     setImageError(false);
@@ -180,9 +169,7 @@ function AddAgent() {
   }, [watch("email")]);
 
   useEffect(() => {
-    const Phone = watch("phone");
-    console.log(Phone.split('').length == 9);
-    
+    const Phone = watch("phone");    
     if (/^[0-9]+$/.test(Phone) && Phone.split('').length == 9 && Phone.startsWith('5')) {
             setPhoneError(false);
     } else {
@@ -210,8 +197,6 @@ function AddAgent() {
     }
   }, [context?.addAgent]);
 
-  //   console.log(imageError);
-  //   console.log(image);
 
   return (
     <div
