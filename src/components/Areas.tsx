@@ -33,7 +33,6 @@ function Area({
     }
   }
 
-  console.log(Number(areaFrom.current?.value));
   
 
   return (
@@ -63,11 +62,9 @@ function Area({
                   ) {
                     setAreaError(true);
                   } else {
-                    // console.log(Number(e.target.value));
-                    // console.log(Number(areaTo.current?.value));
+                   
                     
                     if(Number(e.target.value) < 0 || Number(areaTo.current?.value) < 0){
-                      console.log("err");
                       
                       setAreaError(true)
                     }else{
@@ -151,7 +148,6 @@ function Area({
                     
                     
                     if(Number(e.target.value) < 0 || Number(areaFrom.current?.value) < 0){
-                      console.log("err");
                       
                       setAreaError(true)
                     }else{

@@ -1,125 +1,136 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useForm } from "react-hook-form";
-import { useEffect, useRef, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AgentDataType, CityDataType, RegionDataType } from "../style";
+import { addListingType, AgentDataType, CityDataType, RegionDataType } from "../style";
 
 import arrow from "/arrow.png";
 import checked from "/chechked.png";
 import checkedCorrect from "/checkedCorrect.png";
 import checkedError from "/checkedError.png";
-import addImage from "/addImage.png"
-import deleteImage from "/deleteImage.png"
-import axios from "axios";
+import addImage from "/addImage.png";
+import deleteImage from "/deleteImage.png";
+import { RealEstateContext } from "../App";
 
 function AddListing() {
   const navigate = useNavigate();
+  const context = useContext(RealEstateContext)
 
   const [regionDropdown, setRegionDropdown] = useState<boolean>(false);
   const [cityDropdown, setCityDropdown] = useState<boolean>(false);
-  const [agentDropdown,setAgentDropdown] = useState<boolean>(false)
+  const [agentDropdown, setAgentDropdown] = useState<boolean>(false);
 
   const [deal, setDeal] = useState<string>("0");
   const [chosenRegion, setChosenRegion] = useState<string>("აფხაზეთი");
   const [chosenCity, setChosenCity] = useState<string>("სოხუმი");
-  const [image,setImage] = useState<string>("noImage")
-  const [chosenAgent,setChosenAgent] = useState<AgentDataType>()
-  const [apiImage,setApiImage] = useState<any>()
+  const [image, setImage] = useState<string>("noImage");
+  const [chosenAgent, setChosenAgent] = useState<any>();
+  const [apiImage, setApiImage] = useState<any>();
 
-  const imageRef = useRef<HTMLInputElement|null>(null)
-
+  const imageRef = useRef<HTMLInputElement | null>(null);
 
   const [regions, setRegions] = useState<RegionDataType[]>();
   const [cities, setCities] = useState<CityDataType[]>();
-  const [agents,setAgents] = useState<AgentDataType[]>()
+  const [agents, setAgents] = useState<AgentDataType[]>();
 
-  const [citiesDropdownData,setCitiesDropdownData] = useState<CityDataType[]>()
+  const [citiesDropdownData, setCitiesDropdownData] =
+    useState<CityDataType[]>();
 
   const [addressError, setAddressError] = useState<boolean>(false);
   const [zipError, setZipError] = useState<boolean>(false);
-  const [priceError,setPriceError] = useState<boolean>(false)
-  const [areaError,setAreaError] = useState<boolean>(false)
-  const [bedroomError,setBedroomError] = useState<boolean>(false)
-  const [descriptionError,setDescriptionError] = useState<boolean>(false)
-  const [imageError,setImageError] = useState<boolean>(false)
+  const [priceError, setPriceError] = useState<boolean>(false);
+  const [areaError, setAreaError] = useState<boolean>(false);
+  const [bedroomError, setBedroomError] = useState<boolean>(false);
+  const [descriptionError, setDescriptionError] = useState<boolean>(false);
+  const [imageError, setImageError] = useState<boolean>(false);
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-  } = useForm();
+  const { register, handleSubmit, watch, setValue } = useForm<addListingType>();
 
-  const onSubmit = (data) => {
-    const postData =  data
+  const onSubmit:SubmitHandler<addListingType> = (data) => {
+    if(image && image != "noImage" && apiImage){
+    const Region:any = regions?.find((item) => item.name == chosenRegion)
+    const City:any = cities?.find((item) => item.name == chosenCity)
 
-    const formImageDate = new FormData()
-    formImageDate.append('image',apiImage)
-
-    // if (apiImage) {
-    //     const reader = new FileReader();
-  
-    //     reader.onloadend = () => {
-    //       const base64String = reader.result; // This will be in data URL format (Base64)
-    //       const binaryData = base64String?.split(',')[1]; // Get the binary part          
-    //       formImageDate =  binaryData; // Save the binary string without the metadata
-    //     };
-  
-    //     reader.readAsDataURL(apiImage); // Read the file as a data URL
-    //   }
-
-    // postData.image = formImageDate
+    console.log(data);
+    console.log(apiImage);
+    console.log(chosenAgent?.id);
+    console.log(chosenCity);
+    console.log(chosenRegion);
+    console.log(Region);
+    console.log(City);
     
-    const Region = regions?.find((item)=>item.name == chosenRegion)
-    const City = cities?.find((item)=>item.name == chosenCity)
-    // postData.area = parseInt(postData.area,10)
-    // postData.price = parseInt(postData.price,10)
-    // postData.bedrooms = parseInt(postData.bedrooms,10)
-    // postData.is_rental = parseInt(postData.is_rental,10)
-    // postData.region_id = Region?.id
-    // postData.city_id = City?.id
-    // postData.agent_id = chosenAgent?.id
-    console.log(postData);
-    console.log(JSON.stringify(postData));
     
-    // if(!imageError){
-        // const postListing = async () =>{
-            
-            // try{
-            //     const response = await axios.post(
-            //         "https://api.real-estate-manager.redberryinternship.ge/api/real-estates",
-            //         postData,
-            //         {
-            //             headers: {
-            //                 'Authorization': 'Bearer 9d06971e-aaca-4a8e-a40d-e6d89286772c',
-            //               }
-            //         }
-            //     )
-                // const response = await fetch("https://api.real-estate-manager.redberryinternship.ge/api/real-estates",
-                //     {
-                //         method:"POST",
-                //         headers:{
-                //             'Authorization':"Bearer 9d06971e-aaca-4a8e-a40d-e6d89286772c",
-                //             'Content-Type': 'multipart/form-data',
-                //         },
-                //         body:JSON.stringify(postData)
-                //     }
-                // )
-                // if (!response.ok) {
-                //     throw new Error(`Server responded with status: ${response.status}`);
-                //   }
-                const data = await response.json()
-                console.log(data)
-            // }catch(error){
-            //     console.error(error.message);
-                
-            // }
-        // }
-        // postListing()
-        // console.log(data);
-    // }
+    
+
+
+    const form = new FormData();
+
+    form.append("region_id", Region.id);
+    form.append("price", data.price);
+    form.append("zip_code", data.zip_code);
+    form.append("area", data.area);
+    form.append("city_id", City?.id);
+    form.append("address", data.address);
+    form.append("agent_id", chosenAgent?.id);
+    form.append("bedrooms", data.bedrooms);
+    form.append("is_rental", deal);
+    form.append("image", apiImage);
+    form.append("description", data.description);
+
+    const postListing = async () =>{
+    try {
+      const response = await fetch(
+        "https://api.real-estate-manager.redberryinternship.ge/api/real-estates",
+        {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            Authorization: "Bearer 9d06971e-aaca-4a8e-a40d-e6d89286772c",
+          },
+          body: form,
+        }
+      );
+      
+      if(response.ok && response.status == 201){
+        localStorage.setItem("address", "");
+              localStorage.setItem("agent", "");
+              localStorage.setItem("area", "");
+              localStorage.setItem("bedroom", "");
+              localStorage.setItem("chosenRegion", "");
+              localStorage.setItem("chosenCity", "");
+              localStorage.setItem("dealType", "");
+              localStorage.setItem("description", "");
+              localStorage.setItem("image", "");
+              localStorage.setItem("apiImage", "")
+              localStorage.setItem("price", "");
+              localStorage.setItem("zip", "");
+              navigate("/");
+      };
+      
+    } catch (err) {
+      console.log(err);
+    }
+    }
+    postListing()
+    }else{
+        setImageError(true)
+    }
   };
-// console.log(errors);
+
+  window.addEventListener('popstate', () => {localStorage.setItem("address", "");
+    localStorage.setItem("agent", "");
+    localStorage.setItem("area", "");
+    localStorage.setItem("bedroom", "");
+    localStorage.setItem("chosenRegion", "");
+    localStorage.setItem("chosenCity", "");
+    localStorage.setItem("dealType", "");
+    localStorage.setItem("description", "");
+    localStorage.setItem("image", "");
+    localStorage.setItem("apiImage", "")
+    localStorage.setItem("price", "");
+    localStorage.setItem("zip", "");;
+  })
+
 
   const onError = (errors: any) => {
     if (errors.address) {
@@ -128,91 +139,101 @@ function AddListing() {
     if (errors.zip_code) {
       setZipError(true);
     }
-    if(errors.price){
-        setPriceError(true)
+    if (errors.price) {
+      setPriceError(true);
     }
-    if(errors.area){
-        setAreaError(true)
+    if (errors.area) {
+      setAreaError(true);
     }
-    if(errors.bedrooms){
-        setBedroomError(true)
+    if (errors.bedrooms) {
+      setBedroomError(true);
     }
-    if(errors.description){
-        setDescriptionError(true)
+    if (errors.description) {
+      setDescriptionError(true);
+    }
+    if (!image || !apiImage) {
+      setImageError(true);
     }
     console.log(errors);
   };
 
   useEffect(() => {
-    let regionsForCities:RegionDataType[]=[];
-      const fetchRegionsData = async () => {
-          try {
-              const response = await fetch(
-                  "https://api.real-estate-manager.redberryinternship.ge/api/regions",
-                  {
-                      method: "GET",
-                      headers: {
-                          "Content-Type": "application/json",
-                        },
-                    }
-                );
-                const regionsData = await response.json();
-                setRegions(regionsData);
-                regionsForCities = regionsData
-            } catch (err) {
-                console.log("Error", err);
-            }
-        };
-        fetchRegionsData();
-        const fetchCitiesData = async () => {
-            try {
-                const response = await fetch(
-              "https://api.real-estate-manager.redberryinternship.ge/api/cities",
-              {
-                  method: "GET",
-                  headers: {
-                      "Content-Type": "application/json",
-                    },
-                }
-            );
-            let citiesData = await response.json();
-            setCities(citiesData);
-            citiesData = citiesData.filter((item:CityDataType)=>{
-                let Region:any = localStorage.getItem("chosenRegion")
-                Region = regionsForCities.find((item:RegionDataType)=>{ if(Region){return item.name == Region}else{return item.name == chosenRegion }})
-                return item.region_id == Region.id
-            })            
-            setCitiesDropdownData(citiesData)            
-        } catch (err) {
-            console.log("Error", err);
-        }
-    };
-    setTimeout(()=>{fetchCitiesData()},1000)
-    ;
-        
-    const fetchAgentsData = async () => {
-        try {
-            const response = await fetch(
-                "https://api.real-estate-manager.redberryinternship.ge/api/agents",
-                {
-                    method: "GET",
-                    headers: {
-                        "Authorization":"Bearer 9d06971e-aaca-4a8e-a40d-e6d89286772c",
-                        "Content-Type": "application/json",
-                      },
-                  }
-              );
-              const agentsData = await response.json();
-              setAgents(agentsData);  
-              if(!localStorage.getItem('agent'))setChosenAgent(agentsData[0])
-          } catch (err) {
-              console.log("Error", err);
+    let regionsForCities: RegionDataType[] = [];
+    const fetchRegionsData = async () => {
+      try {
+        const response = await fetch(
+          "https://api.real-estate-manager.redberryinternship.ge/api/regions",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-      };
-      fetchAgentsData()
+        );
+        const regionsData = await response.json();
+        setRegions(regionsData);
+        regionsForCities = regionsData;
+      } catch (err) {
+        console.log("Error", err);
+      }
+    };
+    fetchRegionsData();
+    const fetchCitiesData = async () => {
+      try {
+        const response = await fetch(
+          "https://api.real-estate-manager.redberryinternship.ge/api/cities",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        let citiesData = await response.json();
+        setCities(citiesData);
+        citiesData = citiesData.filter((item: CityDataType) => {
+          let Region: any = localStorage.getItem("chosenRegion");
+          Region = regionsForCities.find((item: RegionDataType) => {
+            if (Region) {
+              return item.name == Region;
+            } else {
+              return item.name == chosenRegion;
+            }
+          });
+          return item.region_id == Region.id;
+        });
+        setCitiesDropdownData(citiesData);
+      } catch (err) {
+        console.log("Error", err);
+      }
+    };
+    setTimeout(() => {
+      fetchCitiesData();
+    }, 1000);
 
-    const dealType = localStorage.getItem('dealType')
-    if(dealType)setDeal(dealType)
+    const fetchAgentsData = async () => {
+      try {
+        const response = await fetch(
+          "https://api.real-estate-manager.redberryinternship.ge/api/agents",
+          {
+            method: "GET",
+            headers: {
+              Authorization: "Bearer 9d06971e-aaca-4a8e-a40d-e6d89286772c",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const agentsData = await response.json();
+        setAgents(agentsData);
+        if (!localStorage.getItem("agent")) setChosenAgent(agentsData[0]);
+      } catch (err) {
+        console.log("Error", err);
+      }
+    };
+    fetchAgentsData();
+
+    const dealType = localStorage.getItem("dealType");
+    if (dealType) setDeal(dealType);
 
     const address = localStorage.getItem("address");
     if (address) setValue("address", address);
@@ -220,79 +241,113 @@ function AddListing() {
     const zip = localStorage.getItem("zip");
     if (zip) setValue("zip_code", zip);
 
-    const Region = localStorage.getItem("chosenRegion")
-    if(Region)setChosenRegion(Region);
+    const Region = localStorage.getItem("chosenRegion");
+    if (Region) setChosenRegion(Region);
 
-    const City = localStorage.getItem("chosenCity")
-    if(City)setChosenCity(City)
+    const City = localStorage.getItem("chosenCity");
+    if (City) setChosenCity(City);
 
-    const Price = localStorage.getItem("price")
-    if(Price)setValue('price',Price)
+    const Price = localStorage.getItem("price");
+    if (Price) setValue("price", Price);
 
     const Area = localStorage.getItem("area");
-    if(Area)setValue('area',Area)
+    if (Area) setValue("area", Area);
 
-    const Bedroom = localStorage.getItem("bedroom")
-    if(Bedroom)setValue('bedrooms',Bedroom)
+    const Bedroom = localStorage.getItem("bedroom");
+    if (Bedroom) setValue("bedrooms", Bedroom);
 
-    const Description = localStorage.getItem("description")
-    if(Description)setValue("description",Description)
+    const Description = localStorage.getItem("description");
+    if (Description) setValue("description", Description);
 
-    let Image:any = localStorage.getItem("image")
-    if(Image){        
-        Image = JSON.parse(Image)    
-        setImage(Image)
-        setImageError(false)
+    let Image: any = localStorage.getItem("image");
+    if (Image) {
+      Image = JSON.parse(Image);
+      setImage(Image);
+      setImageError(false);
     }
 
-    let Agent:any = localStorage.getItem('agent')
-    console.log(Agent,"Agent")
-    if(Agent){
-        Agent = JSON.parse(Agent)
-        setChosenAgent(Agent)
+    const base64Image = localStorage.getItem("apiImage");
+
+    function base64ToFile(base64String:any, fileName:any) {
+      // Remove the data URL part (if it exists)
+      const arr = base64String.split(",");
+      const mime = arr[0].match(/:(.*?);/)[1]; // Get the MIME type
+      const bstr = atob(arr[1]); // Decode base64 string
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+
+      return new File([u8arr], fileName, { type: mime });
+    }
+
+    let file: any;
+    if (base64Image) {
+      file = base64ToFile(base64Image, "image.png");
+    } else {
+      file = "";
+    }
+    setApiImage(file);
+
+    let Agent: any = localStorage.getItem("agent");
+    if (Agent) {
+      Agent = JSON.parse(Agent);
+      setChosenAgent(Agent);
     }
   }, []);
 
-  const handleRegion = (Region:RegionDataType) =>{
+  const handleRegion = (Region: RegionDataType) => {
     setRegionDropdown(false);
     setChosenRegion(Region.name);
-    localStorage.setItem("chosenRegion",Region.name)    
-    const citiesData = cities?.filter((item:CityDataType)=>{return item.region_id == Region.id})    
-    if(citiesData){setCitiesDropdownData(citiesData)
-        setChosenCity(citiesData[0].name)
-        localStorage.setItem("chosenCity",citiesData[0].name)
+    localStorage.setItem("chosenRegion", Region.name);
+    const citiesData = cities?.filter((item: CityDataType) => {
+      return item.region_id == Region.id;
+    });
+    if (citiesData) {
+      setCitiesDropdownData(citiesData);
+      setChosenCity(citiesData[0].name);
+      localStorage.setItem("chosenCity", citiesData[0].name);
     }
-  }
+  };
 
-  const handleImage = (e:any) => {
-    const selectedFile = e.target.files[0]
-    setApiImage(selectedFile)
-    const Objurl = URL.createObjectURL(selectedFile)
-    setImage(Objurl)
-    setImageError(false)
-    
-    // const toBase64 = (file:any) => {
-    //     return new Promise((resolve, reject) => {
-    //       const reader = new FileReader();
-    //       reader.readAsDataURL(file);
-    //       reader.onload = () => resolve(reader.result);
-    //       reader.onerror = (error) => reject(error);
-    //     });
-    //   };
-      
-    
-    //   const as = async () =>{
-    //     try{
-    //         const base64Image = await toBase64(selectedFile)
-    //         if(base64Image)setApiImage(base64Image)
-    //     }catch(err){
-    //         console.log(err);
-            
-    //     }
-    //   }
-    //   as()
-  }
+  const handleImage = (e:  React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files ? e.target.files[0] :null;
+    if(selectedFile && validateImage(selectedFile)){
+    setApiImage(selectedFile);
 
+    const Objurl = URL.createObjectURL(selectedFile);
+
+    // const selectedFile = e.target.files[0];
+    const fileReader: any = new FileReader();
+
+    fileReader.addEventListener("load", () => {
+      console.log(fileReader.result);
+      localStorage.setItem("apiImage", fileReader.result);
+    });
+
+    fileReader.readAsDataURL(selectedFile);
+
+    setImage(Objurl);
+    setImageError(false);
+    }else{
+        setImageError(true)
+    }
+  };
+
+  const validateImage = (file:File|null) => {
+    
+    if (!file) {
+        return false; // File is required
+      }
+
+    if (file.size > 1024 * 1024) {
+      return false;
+    }
+
+    return true;
+  };
 
   useEffect(() => {
     if (watch("address").length < 2 && watch("address") != "") {
@@ -306,7 +361,7 @@ function AddListing() {
   useEffect(() => {
     const zip = watch("zip_code");
     if (/^[0-9]+$/.test(zip) || zip == "") {
-        setZipError(false);
+      setZipError(false);
     } else {
       setZipError(true);
     }
@@ -316,9 +371,9 @@ function AddListing() {
   useEffect(() => {
     const price = watch("price");
     if (/^[0-9]+$/.test(price) || price == "") {
-        setPriceError(false);
+      setPriceError(false);
     } else {
-        setPriceError(true);
+      setPriceError(true);
     }
     localStorage.setItem("price", watch("price"));
   }, [watch("price")]);
@@ -326,38 +381,70 @@ function AddListing() {
   useEffect(() => {
     const area = watch("area");
     if (/^[0-9]+$/.test(area) || area == "") {
-        setAreaError(false);
+      setAreaError(false);
     } else {
-        setAreaError(true);
+      setAreaError(true);
     }
     localStorage.setItem("area", watch("area"));
   }, [watch("area")]);
 
   useEffect(() => {
     const bedroom = watch("bedrooms");
-    if (/^[0-9]+$/.test(bedroom) || bedroom == "") {
-        setBedroomError(false);
+    if (/^[0-9]+$/.test(bedroom) && Number.isInteger(Number((bedroom)))){
+      setBedroomError(false);
     } else {
-        setBedroomError(true);
+        if(bedroom == ""){
+            setBedroomError(false)
+        }else{
+            setBedroomError(true);
+        }
     }
     localStorage.setItem("bedroom", watch("bedrooms"));
   }, [watch("bedrooms")]);
 
   useEffect(() => {
     const description = watch("description");
-    if (/(?:\b\w+\b[\s]*){5,}/.test(description) || description == "") {
-        setDescriptionError(false);
+    
+    
+    if (description.split(' ').length >= 5 || description == "") {
+      setDescriptionError(false);
     } else {
-        setDescriptionError(true);
+      setDescriptionError(true);
     }
     localStorage.setItem("description", watch("description"));
   }, [watch("description")]);
-  
+
   useEffect(() => {
-    if(image != 'noImage'){
-        localStorage.setItem("image", JSON.stringify(image));
+    if (image != "noImage") {
+      localStorage.setItem("image", JSON.stringify(image));
     }
   }, [image]);
+
+  useEffect(() => {
+    const locAddAgent = localStorage.getItem("addAgent");
+    if (locAddAgent == "false") {
+        const fetchAgentsData = async () => {
+            try {
+              const response = await fetch(
+                "https://api.real-estate-manager.redberryinternship.ge/api/agents",
+                {
+                  method: "GET",
+                  headers: {
+                    Authorization: "Bearer 9d06971e-aaca-4a8e-a40d-e6d89286772c",
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+              const agentsData = await response.json();
+              setAgents(agentsData);
+              
+            } catch (err) {
+              console.log("Error", err);
+            }
+          };
+          fetchAgentsData();
+    }
+  }, [context?.addAgent]);
 
   return (
     <section className="pb-[228px]">
@@ -378,12 +465,18 @@ function AddListing() {
                 value="0"
                 className="w-[17px] h-[17px] bg-transparent absolute appearance-none "
                 {...register("is_rental")}
-                onClick={() => {setDeal("0");localStorage.setItem("dealType","0")}}
+                onClick={() => {
+                  setDeal("0");
+                  localStorage.setItem("dealType", "0");
+                }}
                 checked
               />
               <div
                 className="w-[17px] h-[17xp] flex items-center justify-center border border-black rounded-[50%] "
-                onClick={() => {setDeal("0");localStorage.setItem("dealType","0")}}
+                onClick={() => {
+                  setDeal("0");
+                  localStorage.setItem("dealType", "0");
+                }}
               >
                 <div
                   className={` bg-black w-[7px] h-[7px] rounded-[50%] ${
@@ -401,11 +494,17 @@ function AddListing() {
                 value="1"
                 {...register("is_rental")}
                 className="w-[17px] h-[17px] bg-transparent absolute appearance-none "
-                onClick={() => {setDeal("1");localStorage.setItem("dealType","1")}}
+                onClick={() => {
+                  setDeal("1");
+                  localStorage.setItem("dealType", "1");
+                }}
               />
               <div
                 className="w-[17px] h-[17xp] flex items-center justify-center border border-black rounded-[50%] "
-                onClick={() => {setDeal("1");localStorage.setItem("dealType","1")}}
+                onClick={() => {
+                  setDeal("1");
+                  localStorage.setItem("dealType", "1");
+                }}
               >
                 <div
                   className={` bg-black w-[7px] h-[7px] rounded-[50%] ${
@@ -486,7 +585,10 @@ function AddListing() {
               >
                 <input
                   type="text"
-                  {...register("zip_code", { required: true ,pattern:/^[0-9]+$/})}
+                  {...register("zip_code", {
+                    required: true,
+                    pattern: /^[0-9]+$/,
+                  })}
                   className="text-[16px] text-[#021526] bg-transparent outline-none w-[100%] "
                 />
               </div>
@@ -550,12 +652,12 @@ function AddListing() {
                         <div
                           key={i}
                           className={` cursor-pointer p-[10px] ${
-                            regions.length == (i+1)
+                            regions.length == i + 1
                               ? ""
                               : "border-b border-b-[#808a93]"
                           } w-[100%] text-[14px] text-[#021526] `}
                           onClick={() => {
-                            handleRegion(item)
+                            handleRegion(item);
                           }}
                         >
                           {item.name}
@@ -570,20 +672,24 @@ function AddListing() {
                 ქალაქი
               </h3>
               <div className="relative">
-              <div
-              onClick={()=>{
-                setCityDropdown(!cityDropdown)
-              }}
-                className={` border border-[#808a93]  h-[42px] w-[384px] p-[10px] ${
+                <div
+                  onClick={() => {
+                    setCityDropdown(!cityDropdown);
+                  }}
+                  className={` border border-[#808a93]  h-[42px] w-[384px] p-[10px] ${
                     regionDropdown ? "rounded-t-[6px]" : "rounded-[6px]"
                   } flex justify-between items-center  `}
-              >
-                <p  className=" text-[14px] text-[#021526]" >{chosenCity}</p>
-                <img src={arrow} alt="arrow" className={`w-[14px] h-[14px]  transition-transform duration-500 ${
+                >
+                  <p className=" text-[14px] text-[#021526]">{chosenCity}</p>
+                  <img
+                    src={arrow}
+                    alt="arrow"
+                    className={`w-[14px] h-[14px]  transition-transform duration-500 ${
                       cityDropdown ? " rotate-180" : ""
-                    } `}  />
-              </div>
-              <div
+                    } `}
+                  />
+                </div>
+                <div
                   className={` max-h-[168px] overflow-y-scroll  gap-[3px] border-x border-b border-b-[#808a93] border-x-[#808a93] rounded-b-[6px] bg-[#fff] w-[384px] absolute top-[42px] left-[0px] ${
                     cityDropdown ? "" : "hidden"
                   } `}
@@ -594,14 +700,14 @@ function AddListing() {
                         <div
                           key={i}
                           className={` cursor-pointer p-[10px] ${
-                            citiesDropdownData.length == (i+1)
+                            citiesDropdownData.length == i + 1
                               ? ""
                               : "border-b border-b-[#808a93]"
                           } w-[100%] text-[14px] text-[#021526] `}
                           onClick={() => {
                             setCityDropdown(false);
-                            setChosenCity(item.name)
-                            localStorage.setItem("chosenCity",item.name)
+                            setChosenCity(item.name);
+                            localStorage.setItem("chosenCity", item.name);
                           }}
                         >
                           {item.name}
@@ -615,16 +721,16 @@ function AddListing() {
         </div>
         <div className="mt-[101px]">
           <h2 className="text-[16px] text-[#021526] font-medium mb-[22px] ">
-          ბინის დეტალები
+            ბინის დეტალები
           </h2>
           <div className="flex gap-[20px] ">
             <div>
               <h3 className="text-[14px] text-[#021526] font-medium mb-[5px] ">
-              ფასი
+                ფასი
               </h3>
               <div
                 className={`  border ${
-                    priceError
+                  priceError
                     ? "border-[#F93B1D]"
                     : !watch("price")
                     ? "border-[#808a93]"
@@ -633,7 +739,7 @@ function AddListing() {
               >
                 <input
                   type="text"
-                  {...register("price",{pattern:/^[0-9]+$/})}
+                  {...register("price", { pattern: /^[0-9]+$/ })}
                   className="text-[16px] text-[#021526] bg-transparent outline-none w-[100%] "
                 />
               </div>
@@ -664,7 +770,7 @@ function AddListing() {
             </div>
             <div>
               <h3 className="text-[14px] text-[#021526] font-medium mb-[5px] ">
-              ფართობი
+                ფართობი
               </h3>
               <div
                 className={`  border ${
@@ -677,7 +783,7 @@ function AddListing() {
               >
                 <input
                   type="text"
-                  {...register("area",{pattern:/^[0-9]+$/})}
+                  {...register("area", { pattern: /^[0-9]+$/ })}
                   className="text-[16px] text-[#021526] bg-transparent outline-none w-[100%] "
                 />
               </div>
@@ -707,186 +813,234 @@ function AddListing() {
               </div>
             </div>
           </div>
-            <div>
-              <h3 className="text-[14px] text-[#021526] font-medium mb-[5px] mt-[20px] ">
+          <div>
+            <h3 className="text-[14px] text-[#021526] font-medium mb-[5px] mt-[20px] ">
               საძინებლების რაოდენობა*
-              </h3>
-              <div
-                className={`  border ${
+            </h3>
+            <div
+              className={`  border ${
+                bedroomError
+                  ? "border-[#F93B1D]"
+                  : !watch("bedrooms")
+                  ? "border-[#808a93]"
+                  : "border-[#45A849]"
+              }  p-[10px] rounded-[6px] w-[384px] h-[42px] `}
+            >
+              <input
+                type="text"
+                {...register("bedrooms", {
+                  required: true,
+                  pattern: /^[0-9]+$/,
+                })}
+                className="text-[16px] text-[#021526] bg-transparent outline-none w-[100%] "
+              />
+            </div>
+            <div className="flex items-center gap-[7px] mt-[4px]">
+              <img
+                className="w-[12px] h-[11px] "
+                src={
                   bedroomError
-                    ? "border-[#F93B1D]"
+                    ? checkedError
                     : !watch("bedrooms")
-                    ? "border-[#808a93]"
-                    : "border-[#45A849]"
-                }  p-[10px] rounded-[6px] w-[384px] h-[42px] `}
+                    ? checked
+                    : checkedCorrect
+                }
+                alt=""
+              />
+              <p
+                className={`text-[14px] ${
+                  bedroomError
+                    ? "text-[#F93B1D]"
+                    : !watch("bedrooms")
+                    ? "text-[#021526]"
+                    : "text-[#45A849]"
+                } `}
               >
-                <input
-                  type="text"
-                  {...register("bedrooms",{required:true,pattern:/^[0-9]+$/})}
-                  className="text-[16px] text-[#021526] bg-transparent outline-none w-[100%] "
-                />
-              </div>
-              <div className="flex items-center gap-[7px] mt-[4px]">
-                <img
-                  className="w-[12px] h-[11px] "
-                  src={
-                    bedroomError
-                      ? checkedError
-                      : !watch("bedrooms")
-                      ? checked
-                      : checkedCorrect
-                  }
-                  alt=""
-                />
-                <p
-                  className={`text-[14px] ${
-                    bedroomError
-                      ? "text-[#F93B1D]"
-                      : !watch("bedrooms")
-                      ? "text-[#021526]"
-                      : "text-[#45A849]"
-                  } `}
-                >
-                  მხოლოდ რიცხვები
-                </p>
-              </div>
+                მხოლოდ რიცხვები
+              </p>
+            </div>
           </div>
-          <div  >
-          <h3 className="text-[14px] text-[#021526] font-medium mb-[5px] mt-[20px] ">
-          აღწერა *
-              </h3>
-              <div className={` w-[100%] h-[135px] mt-[5px] resize-none bg-[#fff] border text-[16px] text-[#021526] ${
-                        descriptionError
-                          ? "border-[#F93B1D]"
-                          : !watch("description")
-                          ? "border-[#808a93]"
-                          : "border-[#45A849]"
-                      } rounded-[6px] p-[10px] `}>
-                <textarea
+          <div>
+            <h3 className="text-[14px] text-[#021526] font-medium mb-[5px] mt-[20px] ">
+              აღწერა *
+            </h3>
+            <div
+              className={` w-[100%] h-[135px] mt-[5px] resize-none bg-[#fff] border text-[16px] text-[#021526] ${
+                descriptionError
+                  ? "border-[#F93B1D]"
+                  : !watch("description")
+                  ? "border-[#808a93]"
+                  : "border-[#45A849]"
+              } rounded-[6px] p-[10px] `}
+            >
+              <textarea
                 className=" w-[100%] h-[100%] bg-transparent outline-none "
-                {...register('description',{required:true,pattern:/(?:\b\w+\b[\s]*){5,}/})}
-                    
-                  />
-                  </div>
-                  <div className="flex items-center gap-[7px] mt-[4px]">
-                <img
-                  className="w-[12px] h-[11px] "
-                  src={
-                    descriptionError
-                      ? checkedError
-                      : !watch("description")
-                      ? checked
-                      : checkedCorrect
-                  }
-                  alt=""
-                />
-                <p
-                  className={`text-[14px] ${
-                    descriptionError
-                      ? "text-[#F93B1D]"
-                      : !watch("description")
-                      ? "text-[#021526]"
-                      : "text-[#45A849]"
-                  } `}
-                >
-                  მინიმუმ ხუთი სიტყვა
-                </p>
-              </div>
+                {...register("description", {
+                  required: true,
+                  validate: (val)=>{return val.trim().split(/\s+/).filter(Boolean).length >= 5},
+                })}
+              />
+            </div>
+            <div className="flex items-center gap-[7px] mt-[4px]">
+              <img
+                className="w-[12px] h-[11px] "
+                src={
+                  descriptionError
+                    ? checkedError
+                    : !watch("description")
+                    ? checked
+                    : checkedCorrect
+                }
+                alt=""
+              />
+              <p
+                className={`text-[14px] ${
+                  descriptionError
+                    ? "text-[#F93B1D]"
+                    : !watch("description")
+                    ? "text-[#021526]"
+                    : "text-[#45A849]"
+                } `}
+              >
+                მინიმუმ ხუთი სიტყვა
+              </p>
+            </div>
           </div>
           <div className="relative">
-          <h3 className="text-[14px] text-[#021526] font-medium mb-[5px] mt-[20px] ">
-          ატვირთეთ ფოტო *
-              </h3>
-              <div className={`mt-[10px] w-[100%] h-[120px] rounded-[8px] border border-dashed ${imageError?"border-[#F93B1D]":image  == "noImage"?"border-[#2d3648]":"border-[#45A849]"} flex items-center justify-center `} onClick={()=>{if(imageRef.current)imageRef.current.click()}} >
-              <input  ref={imageRef} onChange={(e)=>{handleImage(e)}} 
-                style={{ display: "none" }} type="file" id="fileUpload" name="fileUpload"  accept="image/*" />
-                <div className="w-[92px] h-[82px] flex justify-center items-center " >
-              <img src={!image || image == "noImage"? addImage:image} className={!image || image == "noImage"?"":" rounded-[4px] w-[92px] h-[82px]"} alt="" />
+            <h3 className="text-[14px] text-[#021526] font-medium mb-[5px] mt-[20px] ">
+              ატვირთეთ ფოტო *
+            </h3>
+            <div
+              className={`mt-[10px] w-[100%] h-[120px] rounded-[8px] border border-dashed ${
+                imageError
+                  ? "border-[#F93B1D]"
+                  : image == "noImage"
+                  ? "border-[#2d3648]"
+                  : "border-[#45A849]"
+              } flex items-center justify-center `}
+              onClick={() => {
+                if (imageRef.current) imageRef.current.click();
+              }}
+            >
+              <input
+                ref={imageRef}
+                onChange={(e) => {
+                  handleImage(e);
+                }}
+                style={{ display: "none" }}
+                type="file"
+                id="fileUpload"
+                name="fileUpload"
+                accept="image/*"
+              />
+              <div className="w-[92px] h-[82px] flex justify-center items-center ">
+                <img
+                  src={!image || image == "noImage" ? addImage : image}
+                  className={
+                    !image || image == "noImage"
+                      ? ""
+                      : " rounded-[4px] w-[92px] h-[82px]"
+                  }
+                  alt=""
+                />
               </div>
-              </div>
-              <img src={deleteImage} className={!image || image == "noImage" ? "hidden" :"w-[24px] h-[24px] absolute top-[115px] left-[425px] "}  alt="delete image" onClick={()=>{setImage('noImage');setImageError(true);localStorage.setItem('image',"");if(imageRef.current)imageRef.current.value = ""}} />
+            </div>
+            <img
+              src={deleteImage}
+              className={
+                !image || image == "noImage"
+                  ? "hidden"
+                  : "w-[24px] h-[24px] absolute top-[115px] left-[425px] "
+              }
+              alt="delete image"
+              onClick={() => {
+                setImage("noImage");
+                setImageError(true);
+                localStorage.setItem("image", "");
+                if (imageRef.current) imageRef.current.value = "";
+              }}
+            />
           </div>
           <div className="mt-[80px]">
-          <h2 className="text-[16px] text-[#021526] font-medium mb-[22px] ">
-          აგენტი
-          </h2>
-          <h3 className="text-[14px] text-[#021526] font-medium mb-[5px] mt-[15px] ">
-          აირჩიე
-              </h3>
-              <div className="relative">
-                <div
-                  onClick={() => {
-                    setAgentDropdown(!agentDropdown);
-                  }}
-                  className={`  border border-[#808a93] p-[10px] ${
-                    agentDropdown ? "rounded-t-[6px]" : "rounded-[6px]"
-                  } h-[42px] w-[384px] flex justify-between items-center  `}
-                >
-                  <p className=" text-[14px] text-[#021526]">{chosenAgent?.name}</p>
-                  <img
-                    src={arrow}
-                    alt="arrow"
-                    className={`w-[14px] h-[14px]  transition-transform duration-500 ${
-                        agentDropdown ? " rotate-180" : ""
-                    } `}
-                  />
-                </div>
-                <div
-                  className={` max-h-[168px] overflow-y-scroll  gap-[3px] border-x border-b border-b-[#808a93] border-x-[#808a93] rounded-b-[6px] bg-[#fff] w-[384px] absolute top-[42px] left-[0px] ${
-                    agentDropdown ? "" : "hidden"
+            <h2 className="text-[16px] text-[#021526] font-medium mb-[22px] ">
+              აგენტი
+            </h2>
+            <h3 className="text-[14px] text-[#021526] font-medium mb-[5px] mt-[15px] ">
+              აირჩიე
+            </h3>
+            <div className="relative">
+              <div
+                onClick={() => {
+                  setAgentDropdown(!agentDropdown);
+                }}
+                className={`  border border-[#808a93] p-[10px] ${
+                  agentDropdown ? "rounded-t-[6px]" : "rounded-[6px]"
+                } h-[42px] w-[384px] flex justify-between items-center  `}
+              >
+                <p className=" text-[14px] text-[#021526]">
+                  {chosenAgent?.name}
+                </p>
+                <img
+                  src={arrow}
+                  alt="arrow"
+                  className={`w-[14px] h-[14px]  transition-transform duration-500 ${
+                    agentDropdown ? " rotate-180" : ""
                   } `}
-                >
-                    <div
-                          className={` cursor-pointer p-[10px] border-b border-b-[#808a93] w-[100%] text-[14px] text-[#021526] flex items-center gap-[10px]`}
-                          onClick={() => {
-                            
-                          }}
-                        >
-                            <img src={addImage} alt="" />
-                          <p className="text-[14px] text-[#021526]" >დაამატე აგენტი</p>
-                        </div>
-                  {agents &&
-                    agents.map((item: AgentDataType, i: number) => {
-                        
-                        
-                      return (
-                        <div
-                          key={i}
-                          className={` cursor-pointer p-[10px] ${
-                            agents.length == (i+1)
-                              ? ""
-                              : "border-b border-b-[#808a93]"
-                          } w-[100%] text-[14px] text-[#021526] `}
-                          onClick={() => {
-                            setAgentDropdown(false)
-                            setChosenAgent(item)
-                            localStorage.setItem('agent',JSON.stringify(item))
-                          }}
-                        >
-                          {item.name}
-                        </div>
-                      );
-                    })}
-                </div>
+                />
               </div>
+              <div
+                className={` max-h-[168px] overflow-y-scroll  gap-[3px] border-x border-b border-b-[#808a93] border-x-[#808a93] rounded-b-[6px] bg-[#fff] w-[384px] absolute top-[42px] left-[0px] ${
+                  agentDropdown ? "" : "hidden"
+                } `}
+              >
+                <div
+                  className={` cursor-pointer p-[10px] border-b border-b-[#808a93] w-[100%] text-[14px] text-[#021526] flex items-center gap-[10px]`}
+                  onClick={() => {context?.setAddAgent(true);localStorage.setItem('addAgent','true')}}
+                >
+                  <img src={addImage} alt="" />
+                  <p className="text-[14px] text-[#021526]">დაამატე აგენტი</p>
+                </div>
+                {agents &&
+                  agents.map((item: AgentDataType, i: number) => {
+                    return (
+                      <div
+                        key={i}
+                        className={` cursor-pointer p-[10px] ${
+                          agents.length == i + 1
+                            ? ""
+                            : "border-b border-b-[#808a93]"
+                        } w-[100%] text-[14px] text-[#021526] `}
+                        onClick={() => {
+                          setAgentDropdown(false);
+                          setChosenAgent(item);
+                          localStorage.setItem("agent", JSON.stringify(item));
+                        }}
+                      >
+                        {item.name}
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
           </div>
         </div>
         <div className="flex justify-end gap-[15px] mt-[90px]">
           <button
             className="rounded-[10px] border border-[#f93b1d] text-[#f93b1d] text-[16px] py-[14px] px-[16px]"
             onClick={() => {
-                localStorage.setItem("address", "")
-                localStorage.setItem("agent", "")
-                localStorage.setItem("area", "")
-                localStorage.setItem("bedroom", "")
-                localStorage.setItem("chosenRegion", "")
-                localStorage.setItem("chosenCity", "")
-                localStorage.setItem("dealType", "")
-                localStorage.setItem("description", "")
-                localStorage.setItem("image", "")
-                localStorage.setItem("price", "")
-                localStorage.setItem("zip", "");
-                navigate("/");
+              localStorage.setItem("address", "");
+              localStorage.setItem("agent", "");
+              localStorage.setItem("area", "");
+              localStorage.setItem("bedroom", "");
+              localStorage.setItem("chosenRegion", "");
+              localStorage.setItem("chosenCity", "");
+              localStorage.setItem("dealType", "");
+              localStorage.setItem("description", "");
+              localStorage.setItem("image", "");
+              localStorage.setItem("apiImage", "")
+              localStorage.setItem("price", "");
+              localStorage.setItem("zip", "");
+              navigate("/");
             }}
           >
             გაუქმება

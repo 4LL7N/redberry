@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import arrow from "/arrow.png";
 import Regions from "./regions";
 import Prices from "./prices";
@@ -13,9 +13,11 @@ import bed from '/bed.png'
 import areaIcon from '/area.png'
 import zip from '/zip.png'
 import { useNavigate } from "react-router-dom";
+import { RealEstateContext } from "../App";
 
 function Home() {
   const navigate = useNavigate()
+  const context = useContext(RealEstateContext)
 
   const [region, setRegion] = useState<boolean>(false);
   const [price, setPrice] = useState<boolean>(false);
@@ -58,49 +60,86 @@ function Home() {
     let RegionArr:any = localStorage.getItem("Regions")
     if(RegionArr)RegionArr=JSON.parse(RegionArr)
 
-    let houseData = data
+    let houseData:RealEstate[] = []
 
-    if(AreaTo != "" && AreaFrom != "" && houseData){
-      console.log("sad");
+    if(AreaTo != "" && AreaFrom != "" ){
       
-      houseData = houseData.filter((item: any) => {
+      houseData = data.filter((item: any) => {
         const itemArea = parseFloat(item.area); 
         const minArea = parseFloat(AreaFrom || "0");
         const maxArea = parseFloat(AreaTo || "0")
 
         return !isNaN(itemArea) && itemArea >= minArea && itemArea <= maxArea; 
       })
-      console.log("2");
       
     }
-    if(PriceTo != "" && PriceFrom != "" && houseData){
-      console.log('3');
-      
-      houseData = houseData.filter((item: any) => {
+    if(PriceTo != "" && PriceFrom != "" ){
+      const Data = data.filter((item: any) => {
         const itemPrice = parseFloat(item.price); // Use parseFloat for floating-point numbers
         const minPrice = parseFloat(PriceFrom || "0"); // Default to 0 if value is undefined
         const maxPrice = parseFloat(PriceTo || "0")
 
         return !isNaN(itemPrice) && itemPrice >= minPrice && itemPrice <= maxPrice; // Filter based on parsed numbers
       });
+      const LessData:RealEstate[] = Data.length < houseData.length? Data: houseData
+      const MoreData:RealEstate[] = Data.length > houseData.length? Data: houseData
+      for (let i = 0; i < LessData.length; i++) {
+        if(!MoreData.includes(LessData[i])){          
+          MoreData.push(LessData[i])
+        }
+      }
+      houseData = MoreData
     }
+
     if(RegionArr.length > 0){
-      houseData = houseData.filter((item:RealEstate)=>{
+      
+
+      const Data = data.filter((item:RealEstate)=>{
         return RegionArr.includes(item.city.region.name)
       })
-    }
-    if(BedroomsNum){
-      houseData = houseData.filter((item:RealEstate)=>{
-        if(BedroomsNum == ""){
-          return true
-        }else{
-          return item.bedrooms == Number(BedroomsNum)
+      
+      const LessData:RealEstate[] = Data.length < houseData.length? Data: houseData
+      const MoreData:RealEstate[] = Data.length > houseData.length? Data: houseData
+      for (let i = 0; i < LessData.length; i++) {
+        if(!MoreData.includes(LessData[i])){          
+          MoreData.push(LessData[i])
         }
-      })
+      }
+      houseData = MoreData
+
     }
+
+    if(BedroomsNum){
+      
+      
+      const Data = data.filter((item:RealEstate)=>{
+          if(BedroomsNum == ""){
+            return true
+          }else{
+            return item.bedrooms == Number(BedroomsNum)
+          }
+        })
+        
+        
+      const LessData:RealEstate[] = Data.length < houseData.length? Data: houseData
+      const MoreData:RealEstate[] = Data.length > houseData.length? Data: houseData
+      for (let i = 0; i < LessData.length; i++) {
+        if(!MoreData.includes(LessData[i])){          
+          MoreData.push(LessData[i])
+        }
+      }
+      houseData = MoreData
+
+    }
+    if((PriceTo != "" && PriceFrom != "") || (RegionArr.length > 0) || (BedroomsNum) || (AreaTo != "" && AreaFrom != "")  ){
+      
     setHouses(houseData)
+    }else{
+      setHouses(data)
+    }
   }
 
+  
   useEffect(() => {
     const AreaFrom:any = localStorage?.getItem("areaFrom");
     if (AreaFrom && areaFrom.current) areaFrom.current.value = AreaFrom;
@@ -115,8 +154,11 @@ function Home() {
     }
 
     const PriceFrom:any = localStorage?.getItem("priceFrom");
-    if (PriceFrom && priceFrom.current) priceFrom.current.value = PriceFrom;
+    console.log(PriceFrom);
+    
+    if (PriceFrom  && priceFrom.current) priceFrom.current.value = PriceFrom;
     const PriceTo:any = localStorage?.getItem("priceTo");
+    console.log(PriceTo);
     if (PriceTo && priceTo.current) priceTo.current.value = PriceTo;
 
     if (PriceTo != "" && PriceFrom != "") {
@@ -134,8 +176,10 @@ function Home() {
     const BedroomsNum:any = localStorage.getItem('BedroomsNum')
     if(BedroomsNum )setBedroomsNum(BedroomsNum);
     if(bedroomsRef.current)bedroomsRef.current.value = BedroomsNum
-    let houseData:RealEstate[]=[]
 
+    const AddAgent = localStorage.getItem("addAgent")
+    if(AddAgent == "true")context?.setAddAgent(true)
+      
     const fetchData = async () =>{
       try{ 
         const response = await fetch("https://api.real-estate-manager.redberryinternship.ge/api/real-estates",{
@@ -148,11 +192,12 @@ function Home() {
         if(!response.ok)throw new Error(`HTTP ERRor! status: ${response.status} `)
           const data = await response.json()
           setData(data)
-          houseData=data
 
-          if(AreaTo != "" && AreaFrom != "" && houseData){
+          let houseData:RealEstate[] = []
+
+          if(AreaTo != "" && AreaFrom != "" ){
             
-            houseData = houseData.filter((item: any) => {
+            houseData = data.filter((item: any) => {
               const itemArea = parseFloat(item.area); 
               const minArea = parseFloat(AreaFrom || "0");
               const maxArea = parseFloat(AreaTo || "0")
@@ -161,25 +206,69 @@ function Home() {
             })
             
           }
-          if(PriceTo != "" && PriceFrom != "" && houseData){
-          houseData = houseData.filter((item: any) => {
-            const itemPrice = parseFloat(item.price); // Use parseFloat for floating-point numbers
-            const minPrice = parseFloat(PriceFrom || "0"); // Default to 0 if value is undefined
-            const maxPrice = parseFloat(PriceTo || "0")
+          if(PriceTo != "" && PriceFrom != "" ){
+            const Data = data.filter((item: any) => {
+              const itemPrice = parseFloat(item.price); // Use parseFloat for floating-point numbers
+              const minPrice = parseFloat(PriceFrom || "0"); // Default to 0 if value is undefined
+              const maxPrice = parseFloat(PriceTo || "0")
+      
+              return !isNaN(itemPrice) && itemPrice >= minPrice && itemPrice <= maxPrice; // Filter based on parsed numbers
+            });
+            const LessData:RealEstate[] = Data.length < houseData.length? Data: houseData
+            const MoreData:RealEstate[] = Data.length > houseData.length? Data: houseData
+            for (let i = 0; i < LessData.length; i++) {
+              if(!MoreData.includes(LessData[i])){          
+                MoreData.push(LessData[i])
+              }
+            }
+            houseData = MoreData
+          }
+      
+          if(RegionArr && RegionArr.length > 0){
             
-            return !isNaN(itemPrice) && itemPrice >= minPrice && itemPrice <= maxPrice;
-          });    
-        }
-        if(RegionArr?.length && JSON.parse(RegionArr?.length) > 0){
-          console.log(houseData,"1");
-          console.log(RegionArr,RegionArr?.length);
-          
-          houseData=houseData.filter((item:RealEstate)=>{
-            return RegionArr.includes(item.city.region.name)
-          })
-        } 
-
+      
+            const Data = data.filter((item:RealEstate)=>{
+              return RegionArr.includes(item.city.region.name)
+            })
+            
+            const LessData:RealEstate[] = Data.length < houseData.length? Data: houseData
+            const MoreData:RealEstate[] = Data.length > houseData.length? Data: houseData
+            for (let i = 0; i < LessData.length; i++) {
+              if(!MoreData.includes(LessData[i])){          
+                MoreData.push(LessData[i])
+              }
+            }
+            houseData = MoreData
+      
+          }
+      
+          if(BedroomsNum){
+            
+            
+            const Data = data.filter((item:RealEstate)=>{
+                if(BedroomsNum == ""){
+                  return true
+                }else{
+                  return item.bedrooms == Number(BedroomsNum)
+                }
+              })
+              
+            const LessData:RealEstate[] = Data.length < houseData.length? Data: houseData
+            const MoreData:RealEstate[] = Data.length > houseData.length? Data: houseData
+            for (let i = 0; i < LessData.length; i++) {
+              if(!MoreData.includes(LessData[i])){          
+                MoreData.push(LessData[i])
+              }
+            }
+            houseData = MoreData
+      
+          }
+          if((PriceTo != "" && PriceFrom != "") || (RegionArr.length > 0) || (BedroomsNum) || (AreaTo != "" && AreaFrom != "")  ){
+            
           setHouses(houseData)
+          }else{
+            setHouses(data)
+          }
           
       }catch(err){
         console.log("Error",err);
@@ -326,7 +415,7 @@ function Home() {
               ლისტინგის დამატება
             </p>{" "}
           </button>
-          <div onMouseEnter={()=>{setPlusIcon('/whitePlus.png')}} onMouseLeave={()=>{setPlusIcon('/redPlus.png')}} className=" flex items-center border border-[#f93b1d] hover:bg-[#f93b1d] text-[#f93b1d] hover:text-[#fff] rounded-[10px] px-[16px] py-[10px] ">
+          <div onMouseEnter={()=>{setPlusIcon('/whitePlus.png')}} onMouseLeave={()=>{setPlusIcon('/redPlus.png')}} onClick={()=>{context?.setAddAgent(true);localStorage.setItem('addAgent','true') }} className=" flex items-center border border-[#f93b1d] hover:bg-[#f93b1d] text-[#f93b1d] hover:text-[#fff] rounded-[10px] px-[16px] py-[10px] ">
             {" "}
             <img src={plusIcon}   alt="whitePlus" className="mr-[2px]" />
             <p className="text-[16px]  font-medium ">
@@ -452,12 +541,12 @@ function Home() {
         ) : null}
       </div>
       <main className="flex-grow grid grid-cols-4 gap-y-[20px] mt-[32px]  ">
-        {houses? houses.map((item:RealEstate,i:number) => {
+        {houses? houses.map((item:RealEstate,i:number) => {          
           return(
               <div key={i} className="bg-[#fff] rounded-[14px] overflow-hidden w-[384px] flex flex-col " onClick={()=>{navigate(`${item.id}`)}}  >
                 <div className="relative" >
                   <img className=" w-[384px] h-[307px]" src={item.image} alt="" />
-                  <div className="absolute left-[23px] top-[23px] bg-[#02152680] rounded-[15px] text-[12px] text-[#fff] px-[10px] py-[6px] font-medium " >ქირავდება</div>
+                  <div className="absolute left-[23px] top-[23px] bg-[#02152680] rounded-[15px] text-[12px] text-[#fff] px-[10px] py-[6px] font-medium " >{item.is_rental == 0?"იყიდება":"ქირავდება"}</div>
                 </div>
                 <div className="border border-x-[#dbdbdb] border-b-[#dbdbdb] rounded-b-[14px] px-[25px] py-[22px] " >
                   <h1 className="text-[28px] text-[#021526] font-bold ">{item.price}₾</h1>

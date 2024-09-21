@@ -157,7 +157,7 @@ function Listing() {
                 <div className="flex gap-[5px] ">
                   <img className="w-[18px] h-[18px]" src={zip} alt="zip" />
                   <p className="text-[16px] text-[#021526b3] ">
-                    საფოსტო ინდექსი{listing?.zip_code}
+                    საფოსტო ინდექსი {listing?.zip_code}
                   </p>
                 </div>
               </div>

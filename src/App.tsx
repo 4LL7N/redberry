@@ -33,11 +33,11 @@ function App() {
   
   
   const [deleteListing,setDeleteListing] = useState<boolean>(false)
-  
+  const [addAgent,setAddAgent] = useState<boolean>(false)
 
   return (
     <>
-      <RealEstateContext.Provider value={{deleteListing,setDeleteListing}} >
+      <RealEstateContext.Provider value={{deleteListing,setDeleteListing,addAgent,setAddAgent}} >
         <RouterProvider router={router}/>
       </RealEstateContext.Provider>
     </>

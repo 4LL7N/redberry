@@ -3,6 +3,7 @@ import Header from "./header"
 import { useContext } from "react"
 import { RealEstateContext } from "../App"
 import close from '/delete.png'
+import AddAgent from "./AddAgent"
 
 function Layout() {
     const context = useContext(RealEstateContext)
@@ -31,13 +32,23 @@ function Layout() {
 
   return (
     <>
-    <div className={`bg-[#fff] min-h-[100vh] flex flex-col ${context?.deleteListing?"h-[100vh] overflow-hidden":""} `} >
+    <div className={`bg-[#fff] min-h-[100vh] flex flex-col ${context?.deleteListing|| context?.addAgent?"h-[100vh] overflow-hidden":""} `} >
       <Header/>
       <div className="flex justify-center pt-[62px]  h-full flex-grow " >
       <Outlet/>
       </div>
-      <div className={`absolute flex justify-center items-center w-[100%] h-[100%] inset-0 bg-black bg-opacity-30 backdrop-blur-md ${context?.deleteListing?"":"hidden"} `} >
-        <div className="bg-white rounded-[20px] w-[623px]  px-[30px] py-[24px] " >
+      <div className={` absolute w-[100vw] h-[100vh]  ${context?.deleteListing || context?.addAgent ?"":"hidden"} `} >
+      <div className={`absolute z-[1] flex justify-center items-center w-[100%] h-[100%] inset-0 bg-black bg-opacity-30 backdrop-blur-md `} onClick={()=>{
+        localStorage.setItem('name',"")
+        localStorage.setItem('surname',"")
+        localStorage.setItem('email',"")
+        localStorage.setItem('phone',"")
+        localStorage.setItem('image',"")
+        localStorage.setItem('apiImage',"")
+        context?.setAddAgent(false)
+        localStorage.setItem('addAgent',"false")
+        }} >
+        <div className={` bg-white rounded-[20px] w-[623px]  px-[30px] py-[24px] ${context?.deleteListing?"":"hidden"} `} >
           <div className="flex justify-end w-[100%] cursor-pointer" onClick={()=>{context?.setDeleteListing(false)}} >
             <img className="w-[30px] h-[30px] " src={close} alt="close" />
           </div>
@@ -49,6 +60,8 @@ function Layout() {
           </div>
           </div>
         </div>
+      </div>
+        <AddAgent />
       </div>
     </div>
     </>

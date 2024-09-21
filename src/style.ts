@@ -93,7 +93,9 @@ export interface RealEstate {
 
  export interface RealEstateContextType{
   deleteListing:boolean,
-  setDeleteListing:(deletListing:boolean)=>void
+  setDeleteListing:(deletListing:boolean)=>void,
+  addAgent:boolean,
+  setAddAgent:(addAgent:boolean)=>void
  } 
 
  export interface RegionDataType {
@@ -112,4 +114,21 @@ export interface AgentDataType {
   name: string;
   surname: string;
   avatar: string;
+}
+
+export interface addAgentType {
+  name:string,
+  surname:string,
+  phone:string,
+  email:string
+}
+
+export interface addListingType {
+  address: string;      
+  area: string;       
+  bedrooms: string;    
+  description: string;  
+  is_rental: string;    
+  price: string;        
+  zip_code: string;   
 }
