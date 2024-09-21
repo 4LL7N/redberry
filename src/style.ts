@@ -106,3 +106,10 @@ export interface CityDataType {
   name: string;
   region_id: number;
 }
+
+export interface AgentDataType {
+  id: number;
+  name: string;
+  surname: string;
+  avatar: string;
+}
