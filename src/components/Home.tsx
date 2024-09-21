@@ -131,7 +131,9 @@ function Home() {
       houseData = MoreData
 
     }
-    if((PriceTo != "" && PriceTo != null && PriceFrom != ""  && PriceFrom != null ) || (RegionArr != null && RegionArr.length > 0) || BedroomsNum != null || (AreaTo != "" && AreaTo != null && AreaFrom != "" && AreaFrom != null )  ){
+    console.log((PriceTo != "" && PriceFrom != "" ) || (RegionArr && RegionArr.length > 0) || BedroomsNum || (AreaTo != "" && AreaFrom != ""),'filter (PriceTo != "" && PriceFrom != "" ) || (RegionArr && RegionArr.length > 0) || BedroomsNum || (AreaTo != "" && AreaFrom != "")'  );
+    console.log((PriceTo != "" && PriceTo != null && PriceFrom != ""  && PriceFrom != null ) || (RegionArr != null && RegionArr.length > 0) || BedroomsNum != null || (AreaTo != "" && AreaTo != null && AreaFrom != "" && AreaFrom != null ),'filter (PriceTo != "" && PriceTo != null && PriceFrom != ""  && PriceFrom != null ) || (RegionArr != null && RegionArr.length > 0) || BedroomsNum != null || (AreaTo != "" && AreaTo != null && AreaFrom != "" && AreaFrom != null )' );
+        if((PriceTo != "" && PriceTo != null && PriceFrom != ""  && PriceFrom != null ) || (RegionArr != null && RegionArr.length > 0) || BedroomsNum != null || (AreaTo != "" && AreaTo != null && AreaFrom != "" && AreaFrom != null )  ){
       
     setHouses(houseData)
     }else{
@@ -262,7 +264,9 @@ function Home() {
             houseData = MoreData
       
           }
-          console.log((PriceTo != "" && PriceFrom != "" ) || (RegionArr && RegionArr.length > 0) || BedroomsNum || (AreaTo != "" && AreaFrom != "")  );
+          console.log((PriceTo != "" && PriceFrom != "" ) || (RegionArr && RegionArr.length > 0) || BedroomsNum || (AreaTo != "" && AreaFrom != ""),'fetch (PriceTo != "" && PriceFrom != "" ) || (RegionArr && RegionArr.length > 0) || BedroomsNum || (AreaTo != "" && AreaFrom != "")'  );
+          console.log((PriceTo != "" && PriceTo != null && PriceFrom != ""  && PriceFrom != null ) || (RegionArr != null && RegionArr.length > 0) || BedroomsNum != null || (AreaTo != "" && AreaTo != null && AreaFrom != "" && AreaFrom != null ),'fetch (PriceTo != "" && PriceTo != null && PriceFrom != ""  && PriceFrom != null ) || (RegionArr != null && RegionArr.length > 0) || BedroomsNum != null || (AreaTo != "" && AreaTo != null && AreaFrom != "" && AreaFrom != null )' );
+          
           console.log(AreaTo);
           
           if((PriceTo != "" && PriceTo != null && PriceFrom != ""  && PriceFrom != null ) || (RegionArr != null && RegionArr.length > 0) || BedroomsNum != null || (AreaTo != "" && AreaTo != null && AreaFrom != "" && AreaFrom != null )  ){            
