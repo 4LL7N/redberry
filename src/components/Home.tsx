@@ -274,6 +274,8 @@ function Home() {
         
       }
     }
+    console.log('fetchhhh');
+    
     fetchData()
   }, []);
   
