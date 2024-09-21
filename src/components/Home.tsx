@@ -133,7 +133,7 @@ function Home() {
     }
     console.log((PriceTo != "" && PriceFrom != "" ) || (RegionArr && RegionArr.length > 0) || BedroomsNum || (AreaTo != "" && AreaFrom != ""),'filter (PriceTo != "" && PriceFrom != "" ) || (RegionArr && RegionArr.length > 0) || BedroomsNum || (AreaTo != "" && AreaFrom != "")'  );
     console.log((PriceTo != "" && PriceTo != null && PriceFrom != ""  && PriceFrom != null ) || (RegionArr != null && RegionArr.length > 0) || BedroomsNum != null || (AreaTo != "" && AreaTo != null && AreaFrom != "" && AreaFrom != null ),'filter (PriceTo != "" && PriceTo != null && PriceFrom != ""  && PriceFrom != null ) || (RegionArr != null && RegionArr.length > 0) || BedroomsNum != null || (AreaTo != "" && AreaTo != null && AreaFrom != "" && AreaFrom != null )' );
-        if((PriceTo != "" && PriceTo != null && PriceFrom != ""  && PriceFrom != null ) || (RegionArr != null && RegionArr.length > 0) || BedroomsNum != null || (AreaTo != "" && AreaTo != null && AreaFrom != "" && AreaFrom != null )  ){
+        if((PriceTo != "" && PriceFrom != "" ) || (RegionArr && RegionArr.length > 0) || BedroomsNum || (AreaTo != "" && AreaFrom != "") ){
       
     setHouses(houseData)
     }else{
@@ -269,7 +269,7 @@ function Home() {
           
           console.log(AreaTo);
           
-          if((PriceTo != "" && PriceTo != null && PriceFrom != ""  && PriceFrom != null ) || (RegionArr != null && RegionArr.length > 0) || BedroomsNum != null || (AreaTo != "" && AreaTo != null && AreaFrom != "" && AreaFrom != null )  ){            
+          if((PriceTo != "" && PriceFrom != "" ) || (RegionArr && RegionArr.length > 0) || BedroomsNum || (AreaTo != "" && AreaFrom != "") ){            
             console.log("clear");
             
             setHouses(houseData)
