@@ -131,7 +131,7 @@ function Home() {
       houseData = MoreData
 
     }
-    if((PriceTo != "" && PriceTo != null && PriceFrom != "" && PriceFrom != "") || (RegionArr!== null && RegionArr.length > 0) || BedroomsNum !==null || (AreaTo != "" && AreaTo != null && AreaFrom != "" && AreaFrom != null)   ){
+    if((PriceTo != ""  && PriceFrom != "" ) || (RegionArr!== null && RegionArr.length > 0) || BedroomsNum  || (AreaTo != "" && AreaFrom != "" )   ){
       
     setHouses(houseData)
     }else{
